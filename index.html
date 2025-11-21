@@ -5,88 +5,130 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Wire Reference Dashboard</title>
 <style>
+    :root {
+        --bg-color: #121212;
+        --text-color: #e0e0e0;
+        --card-bg: #1e1e1e;
+        --link-color: #4dabf7;
+        --input-bg: #1e1e1e;
+        --input-border: #333;
+    }
+    body.light-mode {
+        --bg-color: #f4f6f8;
+        --text-color: #333;
+        --card-bg: #fff;
+        --link-color: #007BFF;
+        --input-bg: #fff;
+        --input-border: #ccc;
+    }
     body {
         font-family: Arial, sans-serif;
         margin: 0;
-        padding: 20px;
-        background: #f4f6f8;
+        background: var(--bg-color);
+        color: var(--text-color);
+        transition: background 0.3s, color 0.3s;
+    }
+    header {
+        position: sticky;
+        top: 0;
+        background: var(--bg-color);
+        padding: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--input-border);
+        z-index: 1000;
     }
     h1 {
-        text-align: center;
-        color: #333;
-        margin-bottom: 20px;
+        margin: 0;
+        font-size: 20px;
     }
     #search {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 20px;
-        border: 1px solid #ccc;
+        width: 60%;
+        padding: 8px;
+        border: 1px solid var(--input-border);
         border-radius: 5px;
-        font-size: 16px;
+        font-size: 14px;
+        background: var(--input-bg);
+        color: var(--text-color);
+    }
+    .toggle-btn {
+        padding: 8px 15px;
+        background: var(--card-bg);
+        color: var(--text-color);
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background 0.3s, color 0.3s;
     }
     .grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 20px;
+        padding: 20px;
     }
     .card {
-        background: #fff;
+        background: var(--card-bg);
         border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.5);
         padding: 20px;
         text-align: center;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s;
     }
     .card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.7);
     }
     .card a {
         text-decoration: none;
-        color: #007BFF;
+        color: var(--link-color);
         font-weight: bold;
         font-size: 18px;
     }
     .card p {
-        color: #555;
+        color: var(--text-color);
         font-size: 14px;
         margin-top: 10px;
     }
 </style>
 </head>
 <body>
+<header>
     <h1>Wire Reference Dashboard</h1>
-    <input type="text" id="search" placeholder="Search references..." onkeyup="filterCards()">
-    <div class="grid" id="cardGrid">
-        <div class="card">
-            <a href="ACWUSizes.htmlACWU90 Cable Sizes</a>
-            <p>Reference for ACWU90 cable dimensions and specs.</p>
-        </div>
-        <div class="card">
-            BARE-Cable-Sizes.htmlBare Cable Sizes</a>
-            <p>Guide for bare cable sizing and standards.</p>
-        </div>
-        <div class="card">
-            Cable-Diameter-Guide.htmlCable Diameter Guide</a>
-            <p>Quick lookup for cable diameters.</p>
-        </div>
-        <div class="card">
-            <a href="Cable-DiameterNAL.htmlCable Diameter Guide (Final)</a>
-            <p>Final version of diameter reference chart.</p>
-        </div>
-        <div class="card">
-            TECK90-1KV-Cable-Sizes.htmlTECK90 1KV Cable Sizes</a>
-            <p>Specifications for TECK90 1KV cables.</p>
-        </div>
-        <div class="card">
-            <a href="TECK90-600v-Cable-Sizes90 600V Cable Sizes</a>
-            <p>Specifications for TECK90 600V cables.</p>
-        </div>
-        <div class="card">
-            Tape-Measure-Fractional-Refrence.htmlTape Measure Fractional Reference</a>
-            <p>Fractional measurements for tape reading.</p>
-        </div>
+    <input type="text" id="search" placeholder="Search..." onkeyup="filterCards()">
+    <button class="toggle-btn" onclick="toggleMode()">Light Mode</button>
+</header>
+<div class="grid" id="cardGrid">
+    <div class="card">
+        ACWU90-Cable-Sizes.htmlACWU90 Cable Sizes</a>
+        <p>Reference for ACWU90 cable dimensions and specs.</p>
     </div>
+    <div class="card">
+        BARE-Cable-Sizes.htmlBare Cable Sizes</a>
+        <p>Guide for bare cable sizing and standards.</p>
+    </div>
+    <div class="card">
+        Cable-Diameter-Guide.htmlCable Diameter Guide</a>
+        <p>Quick lookup for cable diameters.</p>
+    </div>
+    <div class="card">
+        Cable-Diameter-Guide-FINAL.htmlCable Diameter Guide (Final)</a>
+        <p>Final version of diameter reference chart.</p>
+    </div>
+    <div class="card">
+        <a href="TECK90-1KV-Cable-Sizes90 1KV Cable Sizes</a>
+        <p>Specifications for TECK90 1KV cables.</p>
+    </div>
+    <div class="card">
+        TECK90-600v-Cable-Sizes.htmlTECK90 600V Cable Sizes</a>
+        <p>Specifications for TECK90 600V cables.</p>
+    </div>
+    <div class="card">
+        Tape-Measure-Fractional-Refrence.htmlTape Measure Fractional Reference</a>
+        <p>Fractional measurements for tape reading.</p>
+    </div>
+</div>
 <script>
     function filterCards() {
         const input = document.getElementById('search').value.toLowerCase();
@@ -94,6 +136,11 @@
         cards.forEach(card => {
             card.style.display = card.textContent.toLowerCase().includes(input) ? '' : 'none';
         });
+    }
+    function toggleMode() {
+        document.body.classList.toggle('light-mode');
+        const btn = document.querySelector('.toggle-btn');
+        btn.textContent = document.body.classList.contains('light-mode') ? 'Dark Mode' : 'Light Mode';
     }
 </script>
 </body>
