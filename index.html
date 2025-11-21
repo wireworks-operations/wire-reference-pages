@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wire Reference Index</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        ul { list-style-type: none; padding: 0; }
+        li { margin: 10px 0; }
+        a { text-decoration: none; color: #007BFF; }
+        a:hover { text-decoration: underline; }
+        input[type="text"] { width: 100%; padding: 8px; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <h1>Wire Reference Pages</h1>
+    <p>Select a reference page below:</p>
+    <input type="text" id="search" placeholder="Search references..." onkeyup="filterList()">
+    <ul id="fileList">
+        <li>ACWU90-Cable-Sizes.htmlACWU90 Cable Sizes</a></li>
+        <li>BARE-Cable-Sizes.htmlBare Cable Sizes</a></li>
+        <li>Cable-Diameter-Guide.htmlCable Diameter Guide</a></li>
+        <li>Cable-Diameter-Guide-FINAL.htmlCable Diameter Guide (Final)</a></li>
+        <li><a href="TECK90-1KV-Cable-Sizes90 1KV Cable Sizes</a></li>
+        <li><a href="TECK90-600izes.htmlTECK90 600V Cable Sizes</a></li>
+        <li>Tape-Measure-Fractional-Refrence.htmlTape Measure Fractional Reference</a></li>
+    </ul>
+    <script>
+        function filterList() {
+            const input = document.getElementById('search').value.toLowerCase();
+            const items = document.querySelectorAll('#fileList li');
+            items.forEach(item => {
+                item.style.display = item.textContent.toLowerCase().includes(input) ? '' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>
