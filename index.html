@@ -1,40 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wire Reference Index</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        h1 { color: #333; }
-        ul { list-style-type: none; padding: 0; }
-        li { margin: 10px 0; }
-        a { text-decoration: none; color: #007BFF; }
-        a:hover { text-decoration: underline; }
-        input[type="text"] { width: 100%; padding: 8px; margin-bottom: 15px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wire Reference Dashboard</title>
+<style>
+    :root {
+        --bg-color: #121212;
+        --text-color: #e0e0e0;
+        --card-bg: #1e1e1e;
+        --link-color: #4dabf7;
+        --input-bg: #1e1e1e;
+        --input-border: #333;
+    }
+    body.light-mode {
+        --bg-color: #f4f6f8;
+        --text-color: #333;
+        --card-bg: #fff;
+        --link-color: #007BFF;
+        --input-bg: #fff;
+        --input-border: #ccc;
+    }
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: var(--bg-color);
+        color: var(--text-color);
+        transition: background 0.3s, color 0.3s;
+    }
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    #search {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid var(--input-border);
+        border-radius: 5px;
+        font-size: 16px;
+        background: var(--input-bg);
+        color: var(--text-color);
+    }
+    .toggle-btn {
+        display: block;
+        margin: 0 auto 20px auto;
+        padding: 10px 20px;
+        background: var(--card-bg);
+        color: var(--text-color);
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background 0.3s, color 0.3s;
+    }
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+    }
+    .card {
+        background: var(--card-bg);
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        padding: 20px;
+        text-align: center;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+    }
+    .card a {
+        text-decoration: none;
+        color: var(--link-color);
+        font-weight: bold;
+        font-size: 18px;
+    }
+    .card p {
+        color: var(--text-color);
+        font-size: 14px;
+        margin-top: 10px;
+    }
+</style>
 </head>
 <body>
-    <h1>Wire Reference Pages</h1>
-    <p>Select a reference page below:</p>
-    <input type="text" id="search" placeholder="Search references..." onkeyup="filterList()">
-    <ul id="fileList">
-        <li>ACWU90-Cable-Sizes.htmlACWU90 Cable Sizes</a></li>
-        <li>BARE-Cable-Sizes.htmlBare Cable Sizes</a></li>
-        <li>Cable-Diameter-Guide.htmlCable Diameter Guide</a></li>
-        <li>Cable-Diameter-Guide-FINAL.htmlCable Diameter Guide (Final)</a></li>
-        <li><a href="TECK90-1KV-Cable-Sizes90 1KV Cable Sizes</a></li>
-        <li><a href="TECK90-600izes.htmlTECK90 600V Cable Sizes</a></li>
-        <li>Tape-Measure-Fractional-Refrence.htmlTape Measure Fractional Reference</a></li>
-    </ul>
-    <script>
-        function filterList() {
-            const input = document.getElementById('search').value.toLowerCase();
-            const items = document.querySelectorAll('#fileList li');
-            items.forEach(item => {
-                item.style.display = item.textContent.toLowerCase().includes(input) ? '' : 'none';
-            });
+    <h1>Wire Reference Dashboard</h1>
+    <button class="toggle-btn" onclick="toggleMode()">Switch to Light Mode</button>
+    <input type="text" id="search" placeholder="Search references..." onkeyup="filterCards()">
+    <div class="grid" id="cardGrid">
+        <div class="card">
+            <CWU90-Cable-Sizes.htmlACWU90 Cable Sizes</a>
+            <p>Reference for ACWU90 cable dimensions and specs.</p>
+        </div>
+        <div class="card">
+            BARE-Cable-Sizes.htmlBare Cable Sizes</a>
+            <p>Guide for bare cable sizing and standards.</p>
+        </div>
+        <div class="card">
+            Cable-Diameter-Guide.htmlCable Diameter Guide</a>
+            <p>Quick lookup for cable diameters.</p>
+        </div>
+        <div class="card">
+            Cable-Diameter-Guide-FINAL.htmlCable Diameter Guide (Final)</a>
+            <p>Final version of diameter reference chart.</p>
+        </div>
+        <div class="card">
+            TECK90-1KV-Cable-Sizes.htmlTECK90 1KV Cable Sizes</a>
+            <p>Specifications for TECK90 1KV cables.</p>
+        </div>
+        <div class="card">
+            TECK90-600v-Cable-Sizes.htmlTECK90 600V Cable Sizes</a>
+            <p>Specifications for TECK90 600V cables.</p>
+        </div>
+        <div class="card">
+            Tape-Measure-Fractional-Refrence.htmlTape Measure Fractional Reference</a>
+            <p>Fractional measurements for tape reading.</p>
+        </div>
+    </div>
+<script>
+    function filterCards() {
+        const input = document.getElementById('search').value.toLowerCase();
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.style.display = card.textContent.toLowerCase().includes(input) ? '' : 'none';
+        });
+    }
+    function toggleMode() {
+        document.body.classList.toggle('light-mode');
+        const btn = document.querySelector('.toggle-btn');
+        if (document.body.classList.contains('light-mode')) {
+            btn.textContent = 'Switch to Dark Mode';
+        } else {
+            btn.textContent = 'Switch to Light Mode';
         }
-    </script>
+    }
+</script>
 </body>
 </html>
