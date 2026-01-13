@@ -1,147 +1,488 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" data-theme="auto">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wire Reference Dashboard</title>
-<style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EECOL Wire Reference Hub</title>
+  <meta name="description" content="Quick-access landing to wire reference pages (types, sizes, diameters, and tape fractions) for the wire room." />
+  <!-- If you have a shared theme file, uncomment and point to it -->
+  <!-- src/assets/css/eecol-theme.css -->
+
+  <style>
+    /* ===== Minimal MD3-like tokens (swap to EECOL theme as needed) ===== */
     :root {
-        --bg-color: #121212;
-        --text-color: #e0e0e0;
-        --card-bg: #1e1e1e;
-        --link-color: #4dabf7;
-        --input-bg: #1e1e1e;
-        --input-border: #333;
+      --brand: #1b5cff;
+      --brand-600: #174fe0;
+      --surface: #ffffff;
+      --surface-2: #f5f7fb;
+      --text: #121212;
+      --text-soft: #3c4043;
+      --outline: #dfe3ea;
+      --shadow: 0 2px 10px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.08);
+      --radius: 16px;
+      --radius-card: 14px;
+      --radius-chip: 18px;
     }
-    body.light-mode {
-        --bg-color: #f4f6f8;
-        --text-color: #333;
-        --card-bg: #fff;
-        --link-color: #007BFF;
-        --input-bg: #fff;
-        --input-border: #ccc;
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --surface: #0f1217;
+        --surface-2: #141822;
+        --text: #eef1f6;
+        --text-soft: #c9cdd4;
+        --outline: #2a3040;
+        --shadow: 0 4px 18px rgba(0,0,0,.35);
+      }
     }
+    html[data-theme="light"] { color-scheme: light; }
+    html[data-theme="dark"]  {
+      color-scheme: dark;
+      --surface: #0f1217;
+      --surface-2: #141822;
+      --text: #eef1f6;
+      --text-soft: #c9cdd4;
+      --outline: #2a3040;
+      --shadow: 0 4px 18px rgba(0,0,0,.35);
+    }
+
+    /* ===== Base ===== */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
     body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        background: var(--bg-color);
-        color: var(--text-color);
-        transition: background 0.3s, color 0.3s;
+      margin: 0;
+      font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(27,92,255,.08), transparent 60%),
+        radial-gradient(1400px 700px at 90% -20%, rgba(27,92,255,.12), transparent 65%),
+        var(--surface);
     }
+    a { color: inherit; text-decoration: none; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 28px 20px 42px; }
+
+    /* ===== Header/Hero ===== */
     header {
-        position: sticky;
-        top: 0;
-        background: var(--bg-color);
-        padding: 15px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid var(--input-border);
-        z-index: 1000;
+      display: grid; gap: 16px;
+      padding: 22px;
+      background: var(--surface-2);
+      border: 1px solid var(--outline);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
     }
-    h1 {
-        margin: 0;
-        font-size: 20px;
+    .title { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .logo {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-600));
+      box-shadow: 0 6px 18px rgba(27,92,255,.35);
     }
-    #search {
-        width: 60%;
-        padding: 8px;
-        border: 1px solid var(--input-border);
-        border-radius: 5px;
-        font-size: 14px;
-        background: var(--input-bg);
-        color: var(--text-color);
+    .title h1 { margin: 0; font-size: 1.6rem; font-weight: 700; letter-spacing: .2px; }
+    .subtitle { margin: 0; color: var(--text-soft); font-size: .98rem; }
+
+    /* ===== Toolbar & Search ===== */
+    .toolbar { display: grid; gap: 10px; }
+    .toolbar-row {
+      display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
     }
-    .toggle-btn {
-        padding: 8px 15px;
-        background: var(--card-bg);
-        color: var(--text-color);
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 14px;
-        transition: background 0.3s, color 0.3s;
+    .search-wrap {
+      position: relative;
+      flex: 1 1 420px;
     }
+    .search {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--surface); border: 1px solid var(--outline);
+      border-radius: 14px; padding: 8px 12px;
+    }
+    .search input {
+      width: 100%; border: 0; outline: none; background: transparent; color: var(--text);
+      font-size: .98rem;
+    }
+    .kbd {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      background: var(--surface-2); border: 1px solid var(--outline);
+      padding: 2px 8px; border-radius: 8px; color: var(--text-soft);
+    }
+    .chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 12px; border: 1px solid var(--outline);
+      border-radius: var(--radius-chip); background: var(--surface); color: var(--text-soft);
+      cursor: pointer; user-select: none;
+    }
+    .chip.active {
+      border-color: var(--brand); color: var(--brand);
+      background: color-mix(in oklab, var(--brand) 14%, var(--surface));
+    }
+    .toggle {
+      margin-left: auto; display: inline-flex; align-items: center; gap: 10px;
+      padding: 8px 12px; border-radius: var(--radius-chip); border: 1px solid var(--outline);
+      background: var(--surface); cursor: pointer;
+    }
+
+    /* ===== Quick Reference Panel ===== */
+    .quick-panel {
+      display: none;
+      position: absolute; z-index: 10; inset-inline: 0; top: calc(100% + 8px);
+      background: var(--surface);
+      border: 1px solid var(--outline);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .quick-header {
+      padding: 10px 12px; font-size: .88rem; color: var(--text-soft);
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--outline);
+    }
+    .quick-list { display: grid; }
+    .quick-item {
+      display: grid; gap: 4px; padding: 10px 12px;
+      border-bottom: 1px solid var(--outline);
+      cursor: pointer; background: var(--surface);
+    }
+    .quick-item:last-child { border-bottom: 0; }
+    .quick-item[aria-selected="true"] {
+      background: color-mix(in oklab, var(--brand) 10%, var(--surface));
+      outline: 2px solid color-mix(in oklab, var(--brand) 40%, transparent);
+    }
+    .qi-title { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: .98rem; }
+    .qi-desc  { color: var(--text-soft); font-size: .9rem; }
+    .badge {
+      display: inline-block; font-size: .75rem; color: var(--brand);
+      background: color-mix(in oklab, var(--brand) 18%, var(--surface));
+      border: 1px solid color-mix(in oklab, var(--brand) 30%, var(--outline));
+      padding: 2px 8px; border-radius: 999px;
+    }
+
+    /* ===== Sections & Cards ===== */
+    .section {
+      margin-top: 18px; padding: 18px 18px 8px;
+      background: var(--surface-2);
+      border: 1px solid var(--outline);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .section h2 { margin: 0 0 6px; font-size: 1.1rem; color: var(--text-soft); }
     .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
-        padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
     }
     .card {
-        background: var(--card-bg);
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-        padding: 20px;
-        text-align: center;
-        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s;
+      display: grid; gap: 8px; padding: 12px 14px;
+      border: 1px solid var(--outline); background: var(--surface);
+      border-radius: var(--radius-card);
+      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
     }
     .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.7);
+      transform: translateY(-2px);
+      border-color: color-mix(in oklab, var(--brand) 40%, var(--outline));
+      box-shadow: var(--shadow);
     }
-    .card a {
-        text-decoration: none;
-        color: var(--link-color);
-        font-weight: bold;
-        font-size: 18px;
+    .card h3 { margin: 0; font-size: 1.02rem; display: flex; align-items: center; gap: 10px; }
+    .card p  { margin: 0; color: var(--text-soft); font-size: .92rem; }
+
+    /* ===== Footer ===== */
+    footer {
+      margin-top: 18px; padding: 14px; color: var(--text-soft);
+      display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between;
     }
-    .card p {
-        color: var(--text-color);
-        font-size: 14px;
-        margin-top: 10px;
+
+    /* ===== Responsive niceties ===== */
+    @media (max-width: 520px) {
+      .title h1 { font-size: 1.35rem; }
+      .subtitle { font-size: .94rem; }
     }
-</style>
+  </style>
 </head>
 <body>
-<header>
-    <h1>Wire Reference Dashboard</h1>
-    <input type="text" id="search" placeholder="Search..." onkeyup="filterCards()">
-    <button class="toggle-btn" onclick="toggleMode()">Light Mode</button>
-</header>
-<div class="grid" id="cardGrid">
-    <div class="card">
-        ACWU90-Cable-Sizes.htmlACWU90 Cable Sizes</a>
-        <p>Reference for ACWU90 cable dimensions and specs.</p>
-    </div>
-    <div class="card">
-        BARE-Cable-Sizes.htmlBare Cable Sizes</a>
-        <p>Guide for bare cable sizing and standards.</p>
-    </div>
-    <div class="card">
-        Cable-Diameter-Guide.htmlCable Diameter Guide</a>
-        <p>Quick lookup for cable diameters.</p>
-    </div>
-    <div class="card">
-        Cable-Diameter-Guide-FINAL.htmlCable Diameter Guide (Final)</a>
-        <p>Final version of diameter reference chart.</p>
-    </div>
-    <div class="card">
-        <a href="TECK90-1KV-Cable-Sizes90 1KV Cable Sizes</a>
-        <p>Specifications for TECK90 1KV cables.</p>
-    </div>
-    <div class="card">
-        TECK90-600v-Cable-Sizes.htmlTECK90 600V Cable Sizes</a>
-        <p>Specifications for TECK90 600V cables.</p>
-    </div>
-    <div class="card">
-        Tape-Measure-Fractional-Refrence.htmlTape Measure Fractional Reference</a>
-        <p>Fractional measurements for tape reading.</p>
-    </div>
-</div>
-<script>
-    function filterCards() {
-        const input = document.getElementById('search').value.toLowerCase();
-        const cards = document.querySelectorAll('.card');
-        cards.forEach(card => {
-            card.style.display = card.textContent.toLowerCase().includes(input) ? '' : 'none';
-        });
+  <div class="wrap">
+    <header aria-label="Reference hub header">
+      <div class="title">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>EECOL Wire Reference Hub</h1>
+          <p class="subtitle">Fast, reliable lookups for wire types, sizes, diameters & tape fractions—made for the wire room.</p>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <!-- Row 1: Search + Theme -->
+        <div class="toolbar-row">
+          <div class="search-wrap" id="searchWrap">
+            <div class="search" role="search">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M21 21l-4.3-4.3m1.8-4.7a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+              <input id="q" type="search" placeholder="Search references (type, size, standard…)" autocomplete="off" aria-autocomplete="list" aria-controls="quickList" />
+              <span class="kbd" aria-hidden="true">/</span>
+            </div>
+
+            <!-- Quick Reference Panel -->
+            <div class="quick-panel" id="quickPanel" role="listbox" aria-label="Quick Reference">
+              <div class="quick-header">Quick Reference (top 5)</div>
+              <div class="quick-list" id="quickList"></div>
+            </div>
+          </div>
+
+          <button class="toggle" id="themeToggle" title="Toggle light/dark">
+            <span>Theme</span><span class="kbd">L/D</span>
+          </button>
+        </div>
+
+        <!-- Row 2: Category chips -->
+        <div class="toolbar-row" role="toolbar" aria-label="Filters">
+          <button class="chip active" data-tag="all" aria-pressed="true">All</button>
+          <button class="chip" data-tag="wire">Wire Types</button>
+          <button class="chip" data-tag="size">Sizes</button>
+          <button class="chip" data-tag="diameter">Diameter</button>
+          <button class="chip" data-tag="tools">Tape & Tools</button>
+        </div>
+      </div>
+    </header>
+
+    <section class="section" aria-label="References">
+      <h2>References</h2>
+      <div id="cards" class="grid" role="list"></div>
+    </section>
+
+    <footer>
+      <div>Made in the wire room · Offline-friendly · Fast to navigate</div>
+      <div>Tip: press <span class="kbd">/</span> to focus search</div>
+    </footer>
+  </div>
+
+  <!-- ===== Manifest (actual repo filenames wired here) ===== -->
+  <script type="application/json" id="pages-data">
+  [
+    {
+      "label": "ACWU90 Cable Sizes",
+      "href": "src/pages/ACWU90-Cable-Sizes.html",
+      "desc": "ACWU90 conductor sizing, ampacity, and application notes.",
+      "tags": ["wire","size"],
+      "badge": "ACWU90"
+    },
+    {
+      "label": "TECK90 Cable Sizes (600V)",
+      "href": "src/pages/TECK90-600v-Cable-Sizes.html",
+      "desc": "TECK90 600V conductor sizing and common configurations.",
+      "tags": ["wire","size"],
+      "badge": "TECK90"
+    },
+    {
+      "label": "TECK90 Cable Sizes (1kV)",
+      "href": "src/pages/TECK90-1KV-Cable-Sizes.html",
+      "desc": "TECK90 1kV conductor sizing and application notes.",
+      "tags": ["wire","size"],
+      "badge": "TECK90"
+    },
+    {
+      "label": "Bare Wire Sizes",
+      "href": "src/pages/BARE-Cable-Sizes.html",
+      "desc": "Bare copper and aluminum sizes with typical dimensions.",
+      "tags": ["wire","size"],
+      "badge": "Bare"
+    },
+    {
+      "label": "Cable Diameter Guide",
+      "href": "src/pages/Cable-Diameter-Guide-FINAL.html",
+      "desc": "Outside diameter references for common cables.",
+      "tags": ["diameter","size"],
+      "badge": "Diameter"
+    },
+    {
+      "label": "Tape Measure Fractional Reference",
+      "href": "src/pages/Tape-Measure-Fractional-Refrence.html",
+      "desc": "Fraction-to-decimal quick reference for accurate measuring.",
+      "tags": ["tools"],
+      "badge": "Tape"
     }
-    function toggleMode() {
-        document.body.classList.toggle('light-mode');
-        const btn = document.querySelector('.toggle-btn');
-        btn.textContent = document.body.classList.contains('light-mode') ? 'Dark Mode' : 'Light Mode';
-    }
-</script>
+  ]
+  </script>
+
+  <!-- ===== Behavior ===== -->
+  <script>
+    (function(){
+      const $ = sel => document.querySelector(sel);
+      const listEl = $("#cards");
+      const searchEl = $("#q");
+      const chips = Array.from(document.querySelectorAll(".chip"));
+      const themeToggle = $("#themeToggle");
+
+      const quickPanel = $("#quickPanel");
+      const quickList  = $("#quickList");
+      const searchWrap = $("#searchWrap");
+
+      // Theme control
+      const applyTheme = (mode) => {
+        document.documentElement.setAttribute("data-theme", mode);
+        localStorage.setItem("theme", mode);
+      };
+      const saved = localStorage.getItem("theme");
+      if (saved) applyTheme(saved);
+      themeToggle.addEventListener("click", () => {
+        const current = document.documentElement.getAttribute("data-theme") || "auto";
+        applyTheme(current === "dark" ? "light" : "dark");
+      });
+      window.addEventListener("keydown", (e) => {
+        if ((e.key === "l" || e.key === "L") && e.altKey) applyTheme("light");
+        if ((e.key === "d" || e.key === "D") && e.altKey) applyTheme("dark");
+        if (e.key === "/" && !e.metaKey && !e.ctrlKey) { e.preventDefault(); searchEl.focus(); }
+      });
+
+      // Manifest
+      const raw = document.getElementById("pages-data").textContent.trim();
+      /** @type {{label:string, href:string, desc:string, tags:string[], badge?:string}[]} */
+      const pages = JSON.parse(raw);
+
+      // State
+      let query = "";
+      let tag = "all";
+      let quickIndex = -1; // keyboard selection index
+
+      const normalize = s => (s || "").toLowerCase();
+      // Simple relevance score
+      const score = (p, q) => {
+        if (!q) return 0;
+        const n = normalize(q);
+        const L = normalize(p.label);
+        const D = normalize(p.desc);
+        const B = normalize(p.badge || "");
+        const T = (p.tags || []).map(normalize).join(" ");
+        let s = 0;
+        if (L.includes(n)) s += 8;
+        if (B.includes(n)) s += 5;
+        if (T.includes(n)) s += 3;
+        if (D.includes(n)) s += 2;
+        // prefix bonus
+        if (L.startsWith(n)) s += 2;
+        return s;
+      };
+      const matches = (p) => {
+        const q = normalize(query);
+        const inQ = !q || normalize(p.label).includes(q) || normalize(p.desc).includes(q) || (p.badge && normalize(p.badge).includes(q));
+        const inTag = (tag === "all") || (p.tags && p.tags.includes(tag));
+        return inQ && inTag;
+      };
+
+      const renderCards = () => {
+        const items = pages.filter(matches);
+        listEl.innerHTML = items.map(p => `
+          ${p.href}
+            <h3>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 5h12v14H6z" stroke="currentColor" stroke-width="1.5" />
+                <path d="M9 8h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M9 12h6M9 16h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+              ${p.label}
+              ${p.badge ? `<span class="badge">${p.badge}</span>` : ""}
+            </h3>
+            <p>${p.desc}</p>
+          </a>
+        `).join("");
+      };
+
+      const showQuick = (items) => {
+        if (!items.length) {
+          quickPanel.style.display = "none";
+          quickIndex = -1;
+          quickList.innerHTML = "";
+          return;
+        }
+        quickList.innerHTML = items.map((p, i) => `
+          ${p.href}
+            <div class="qi-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 5h12v14H6z" stroke="currentColor" stroke-width="1.4" />
+                <path d="M9 8h6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              </svg>
+              ${p.label} ${p.badge ? `<span class="badge">${p.badge}</span>` : ""}
+            </div>
+            <div class="qi-desc">${p.desc}</div>
+          </div>
+        `).join("");
+        quickPanel.style.display = "block";
+      };
+
+      const computeQuick = () => {
+        const q = query.trim();
+        if (q.length === 0) {
+          showQuick([]);
+          return;
+        }
+        const items = pages
+          .filter(matches)
+          .map(p => ({ p, s: score(p, q) }))
+          .sort((a,b) => b.s - a.s || a.p.label.localeCompare(b.p.label))
+          .slice(0, 5)
+          .map(x => x.p);
+        showQuick(items);
+      };
+
+      // Events
+      searchEl.addEventListener("input", (e) => {
+        query = e.target.value || "";
+        computeQuick();
+        renderCards();
+      });
+
+      // Keyboard within search for quick panel
+      searchEl.addEventListener("keydown", (e) => {
+        const items = Array.from(quickList.querySelectorAll(".quick-item"));
+        const has = items.length > 0;
+        if (!has) return;
+
+        if (e.key === "ArrowDown") {
+          e.preventDefault();
+          quickIndex = (quickIndex + 1) % items.length;
+          updateQuickSelection(items);
+        } else if (e.key === "ArrowUp") {
+          e.preventDefault();
+          quickIndex = (quickIndex - 1 + items.length) % items.length;
+          updateQuickSelection(items);
+        } else if (e.key === "Enter") {
+          if (quickIndex >= 0) {
+            e.preventDefault();
+            const href = items[quickIndex].getAttribute("data-href");
+            if (href) window.location.href = href;
+          }
+        } else if (e.key === "Escape") {
+          showQuick([]);
+        }
+      });
+
+      function updateQuickSelection(items) {
+        items.forEach((el, idx) => el.setAttribute("aria-selected", String(idx === quickIndex)));
+        // ensure visibility
+        const sel = items[quickIndex];
+        if (sel) sel.scrollIntoView({ block: "nearest" });
+      }
+
+      // Mouse interactions for quick panel
+      quickList.addEventListener("click", (e) => {
+        const item = e.target.closest(".quick-item");
+        if (!item) return;
+        const href = item.getAttribute("data-href");
+        if (href) window.location.href = href;
+      });
+
+      // Close quick panel when clicking outside
+      document.addEventListener("click", (e) => {
+        if (!searchWrap.contains(e.target)) {
+          showQuick([]);
+        }
+      });
+
+      // Category chips
+      chips.forEach(c => c.addEventListener("click", () => {
+        chips.forEach(x => x.classList.toggle("active", x === c));
+        tag = c.dataset.tag || "all";
+        computeQuick();
+        renderCards();
+      }));
+
+      // Initial paint
+      renderCards();
+    })();
+  </script>
 </body>
 </html>
+``
