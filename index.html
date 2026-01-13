@@ -1,15 +1,15 @@
 <!doctype html>
-<html lang="en" data-theme="auto">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>EECOL Wire Reference Hub</title>
   <meta name="description" content="Quick-access landing to wire reference pages (types, sizes, diameters, and tape fractions) for the wire room." />
   <!-- If you have a shared theme file, uncomment and point to it -->
-  <!-- src/assets/css/eecol-theme.css -->
+  <!-- <linkssets/css/eecol-theme.css -->
 
   <style>
-    /* ===== Minimal MD3-like tokens (swap to EECOL theme as needed) ===== */
+    /* ===== Safe MD tokens (no color-mix) ===== */
     :root {
       --brand: #1b5cff;
       --brand-600: #174fe0;
@@ -22,19 +22,17 @@
       --radius: 16px;
       --radius-card: 14px;
       --radius-chip: 18px;
+
+      /* Fallback accent background without color-mix */
+      --accent-bg: rgba(27,92,255, 0.12);
+      --accent-bg-2: rgba(27,92,255, 0.06);
+      --brand-chip-bg: rgba(27,92,255, 0.14);
+      --brand-chip-border: rgba(27,92,255, 0.35);
+      --brand-card-border: rgba(27,92,255, 0.40);
     }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --surface: #0f1217;
-        --surface-2: #141822;
-        --text: #eef1f6;
-        --text-soft: #c9cdd4;
-        --outline: #2a3040;
-        --shadow: 0 4px 18px rgba(0,0,0,.35);
-      }
-    }
-    html[data-theme="light"] { color-scheme: light; }
-    html[data-theme="dark"]  {
+
+    /* Dark scheme variables */
+    html[data-theme="dark"] {
       color-scheme: dark;
       --surface: #0f1217;
       --surface-2: #141822;
@@ -42,6 +40,11 @@
       --text-soft: #c9cdd4;
       --outline: #2a3040;
       --shadow: 0 4px 18px rgba(0,0,0,.35);
+      --accent-bg: rgba(27,92,255, 0.08);
+      --accent-bg-2: rgba(27,92,255, 0.12);
+      --brand-chip-bg: rgba(27,92,255, 0.18);
+      --brand-chip-border: rgba(27,92,255, 0.45);
+      --brand-card-border: rgba(27,92,255, 0.50);
     }
 
     /* ===== Base ===== */
@@ -52,8 +55,8 @@
       font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
       color: var(--text);
       background:
-        radial-gradient(1200px 600px at 10% -10%, rgba(27,92,255,.08), transparent 60%),
-        radial-gradient(1400px 700px at 90% -20%, rgba(27,92,255,.12), transparent 65%),
+        radial-gradient(1200px 600px at 10% -10%, var(--accent-bg-2), transparent 60%),
+        radial-gradient(1400px 700px at 90% -20%, var(--accent-bg), transparent 65%),
         var(--surface);
     }
     a { color: inherit; text-decoration: none; }
@@ -79,13 +82,8 @@
 
     /* ===== Toolbar & Search ===== */
     .toolbar { display: grid; gap: 10px; }
-    .toolbar-row {
-      display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
-    }
-    .search-wrap {
-      position: relative;
-      flex: 1 1 420px;
-    }
+    .toolbar-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .search-wrap { position: relative; flex: 1 1 420px; }
     .search {
       display: flex; align-items: center; gap: 8px;
       background: var(--surface); border: 1px solid var(--outline);
@@ -105,10 +103,12 @@
       padding: 8px 12px; border: 1px solid var(--outline);
       border-radius: var(--radius-chip); background: var(--surface); color: var(--text-soft);
       cursor: pointer; user-select: none;
+      transition: border-color .12s ease, color .12s ease, background .12s ease;
     }
     .chip.active {
-      border-color: var(--brand); color: var(--brand);
-      background: color-mix(in oklab, var(--brand) 14%, var(--surface));
+      border-color: var(--brand);
+      color: var(--brand);
+      background: var(--brand-chip-bg);
     }
     .toggle {
       margin-left: auto; display: inline-flex; align-items: center; gap: 10px;
@@ -136,18 +136,19 @@
       display: grid; gap: 4px; padding: 10px 12px;
       border-bottom: 1px solid var(--outline);
       cursor: pointer; background: var(--surface);
+      transition: background .12s ease, outline .12s ease;
     }
     .quick-item:last-child { border-bottom: 0; }
     .quick-item[aria-selected="true"] {
-      background: color-mix(in oklab, var(--brand) 10%, var(--surface));
-      outline: 2px solid color-mix(in oklab, var(--brand) 40%, transparent);
+      background: rgba(27,92,255, 0.10);
+      outline: 2px solid rgba(27,92,255, 0.40);
     }
     .qi-title { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: .98rem; }
     .qi-desc  { color: var(--text-soft); font-size: .9rem; }
     .badge {
       display: inline-block; font-size: .75rem; color: var(--brand);
-      background: color-mix(in oklab, var(--brand) 18%, var(--surface));
-      border: 1px solid color-mix(in oklab, var(--brand) 30%, var(--outline));
+      background: rgba(27,92,255, 0.18);
+      border: 1px solid var(--brand-chip-border);
       padding: 2px 8px; border-radius: 999px;
     }
 
@@ -173,11 +174,43 @@
     }
     .card:hover {
       transform: translateY(-2px);
-      border-color: color-mix(in oklab, var(--brand) 40%, var(--outline));
+      border-color: var(--brand-card-border);
       box-shadow: var(--shadow);
     }
     .card h3 { margin: 0; font-size: 1.02rem; display: flex; align-items: center; gap: 10px; }
     .card p  { margin: 0; color: var(--text-soft); font-size: .92rem; }
+    .card .actions {
+      margin-top: 6px;
+      display: flex; gap: 8px; justify-content: flex-end; align-items: center; flex-wrap: wrap;
+    }
+
+    /* ===== Buttons (Option A) ===== */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--outline);
+      background: var(--surface);
+      color: var(--text);
+      font-weight: 600;
+      font-size: .92rem;
+      transition: background .12s ease, border-color .12s ease, color .12s ease, transform .08s ease;
+      cursor: pointer;
+      user-select: none;
+    }
+    .btn:hover {
+      transform: translateY(-1px);
+      border-color: var(--brand-card-border);
+    }
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--brand), var(--brand-600));
+      border: 1px solid var(--brand-chip-border);
+      box-shadow: 0 6px 16px rgba(27,92,255,.25);
+    }
+    .btn-primary:hover {
+      box-shadow: 0 8px 20px rgba(27,92,255,.30);
+    }
 
     /* ===== Footer ===== */
     footer {
@@ -310,15 +343,15 @@
       const quickList  = $("#quickList");
       const searchWrap = $("#searchWrap");
 
-      // Theme control
+      // Theme control (safe default to light)
       const applyTheme = (mode) => {
         document.documentElement.setAttribute("data-theme", mode);
         localStorage.setItem("theme", mode);
       };
       const saved = localStorage.getItem("theme");
-      if (saved) applyTheme(saved);
+      applyTheme(saved || "light");
       themeToggle.addEventListener("click", () => {
-        const current = document.documentElement.getAttribute("data-theme") || "auto";
+        const current = document.documentElement.getAttribute("data-theme") || "light";
         applyTheme(current === "dark" ? "light" : "dark");
       });
       window.addEventListener("keydown", (e) => {
@@ -351,8 +384,7 @@
         if (B.includes(n)) s += 5;
         if (T.includes(n)) s += 3;
         if (D.includes(n)) s += 2;
-        // prefix bonus
-        if (L.startsWith(n)) s += 2;
+        if (L.startsWith(n)) s += 2; // prefix bonus
         return s;
       };
       const matches = (p) => {
@@ -376,6 +408,14 @@
               ${p.badge ? `<span class="badge">${p.badge}</span>` : ""}
             </h3>
             <p>${p.desc}</p>
+            <div class="actions" aria-hidden="true">
+              <span class="btn btn-primary">
+                Open
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M7 12h10M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </div>
           </a>
         `).join("");
       };
@@ -451,7 +491,6 @@
 
       function updateQuickSelection(items) {
         items.forEach((el, idx) => el.setAttribute("aria-selected", String(idx === quickIndex)));
-        // ensure visibility
         const sel = items[quickIndex];
         if (sel) sel.scrollIntoView({ block: "nearest" });
       }
@@ -485,4 +524,3 @@
   </script>
 </body>
 </html>
-``
