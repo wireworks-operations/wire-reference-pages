@@ -36,6 +36,12 @@
             .badge { @apply px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-black rounded uppercase border border-primary/20; }
         }
     </style>
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem("theme") || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            if (savedTheme === 'dark') document.documentElement.classList.add('dark');
+        })();
+    </script>
 </head>
 <body class="min-h-screen">
     <div class="max-w-4xl mx-auto px-6 py-12">
@@ -111,11 +117,5 @@
         </footer>
     </div>
 
-    <script>
-        (function() {
-            const savedTheme = localStorage.getItem("theme") || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-            if (savedTheme === 'dark') document.documentElement.classList.add('dark');
-        })();
-    </script>
 </body>
 </html>

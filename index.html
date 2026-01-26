@@ -68,6 +68,12 @@
             }
         }
     </style>
+    <script>
+        (function() {
+            const theme = localStorage.getItem("theme") || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            if (theme === 'dark') document.documentElement.classList.add('dark');
+        })();
+    </script>
 </head>
 <body class="min-h-screen">
     <div class="max-w-6xl mx-auto px-6 py-12">
@@ -161,7 +167,7 @@
             },
             {
               "label": "Cable Diameter Guide",
-              "href": "src/pages/Cable-Diameter-Guide-FINAL.html",
+              "href": "src/pages/Cable-Diameter-Guide.html",
               "desc": "Outside diameter references for common cables.",
               "tags": ["diameter","size"],
               "badge": "Diameter"
@@ -247,6 +253,18 @@
                 `).join('');
             };
 
+            let activeIdx = -1;
+            const updateSelection = () => {
+                const items = quickList.querySelectorAll('a');
+                items.forEach((item, i) => {
+                    if (i === activeIdx) {
+                        item.classList.add('bg-primary/5', 'ring-2', 'ring-inset', 'ring-primary/20');
+                    } else {
+                        item.classList.remove('bg-primary/5', 'ring-2', 'ring-inset', 'ring-primary/20');
+                    }
+                });
+            };
+
             searchEl.addEventListener("input", (e) => {
                 searchQuery = e.target.value;
                 render();
@@ -254,8 +272,9 @@
                 if (searchQuery.length > 0) {
                     const quickMatches = pages.filter(p => p.label.toLowerCase().includes(searchQuery.toLowerCase())).slice(0, 5);
                     if (quickMatches.length > 0) {
+                        activeIdx = -1;
                         quickList.innerHTML = quickMatches.map(p => `
-                            <a href="${p.href}" class="block px-8 py-4 hover:bg-primary/5 border-b border-surface-variant last:border-0 transition-all group">
+                            <a href="${p.href}" class="block px-8 py-4 hover:bg-primary/5 border-b border-surface-variant last:border-0 transition-all group outline-none">
                                 <div class="flex items-center justify-between">
                                     <div>
                                         <div class="font-bold text-base group-hover:text-primary transition-colors">${p.label}</div>
@@ -270,6 +289,26 @@
                         quickPanel.classList.add('hidden');
                     }
                 } else {
+                    quickPanel.classList.add('hidden');
+                }
+            });
+
+            searchEl.addEventListener("keydown", (e) => {
+                const items = quickList.querySelectorAll('a');
+                if (quickPanel.classList.contains('hidden')) return;
+
+                if (e.key === "ArrowDown") {
+                    e.preventDefault();
+                    activeIdx = (activeIdx + 1) % items.length;
+                    updateSelection();
+                } else if (e.key === "ArrowUp") {
+                    e.preventDefault();
+                    activeIdx = (activeIdx - 1 + items.length) % items.length;
+                    updateSelection();
+                } else if (e.key === "Enter" && activeIdx >= 0) {
+                    e.preventDefault();
+                    items[activeIdx].click();
+                } else if (e.key === "Escape") {
                     quickPanel.classList.add('hidden');
                 }
             });
