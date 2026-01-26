@@ -20,6 +20,13 @@
   code.k{background:#0b1220;border:1px solid #223042;border-radius:6px;padding:1px 6px}
   footer{color:#9CA3AF;text-align:center;padding:22px;font-size:12px}
 </style>
+
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') document.documentElement.classList.add('dark');
+        })();
+    </script>
 </head>
 <body>
 <header>
@@ -200,4 +207,3 @@
 </footer>
 </body>
 </html>
-``

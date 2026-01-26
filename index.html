@@ -1,526 +1,297 @@
-<!doctype html>
-<html lang="en" data-theme="light">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>EECOL Wire Reference Hub</title>
-  <meta name="description" content="Quick-access landing to wire reference pages (types, sizes, diameters, and tape fractions) for the wire room." />
-  <!-- If you have a shared theme file, uncomment and point to it -->
-  <!-- <linkssets/css/eecol-theme.css -->
-
-  <style>
-    /* ===== Safe MD tokens (no color-mix) ===== */
-    :root {
-      --brand: #1b5cff;
-      --brand-600: #174fe0;
-      --surface: #ffffff;
-      --surface-2: #f5f7fb;
-      --text: #121212;
-      --text-soft: #3c4043;
-      --outline: #dfe3ea;
-      --shadow: 0 2px 10px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.08);
-      --radius: 16px;
-      --radius-card: 14px;
-      --radius-chip: 18px;
-
-      /* Fallback accent background without color-mix */
-      --accent-bg: rgba(27,92,255, 0.12);
-      --accent-bg-2: rgba(27,92,255, 0.06);
-      --brand-chip-bg: rgba(27,92,255, 0.14);
-      --brand-chip-border: rgba(27,92,255, 0.35);
-      --brand-card-border: rgba(27,92,255, 0.40);
-    }
-
-    /* Dark scheme variables */
-    html[data-theme="dark"] {
-      color-scheme: dark;
-      --surface: #0f1217;
-      --surface-2: #141822;
-      --text: #eef1f6;
-      --text-soft: #c9cdd4;
-      --outline: #2a3040;
-      --shadow: 0 4px 18px rgba(0,0,0,.35);
-      --accent-bg: rgba(27,92,255, 0.08);
-      --accent-bg-2: rgba(27,92,255, 0.12);
-      --brand-chip-bg: rgba(27,92,255, 0.18);
-      --brand-chip-border: rgba(27,92,255, 0.45);
-      --brand-card-border: rgba(27,92,255, 0.50);
-    }
-
-    /* ===== Base ===== */
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-    body {
-      margin: 0;
-      font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
-      color: var(--text);
-      background:
-        radial-gradient(1200px 600px at 10% -10%, var(--accent-bg-2), transparent 60%),
-        radial-gradient(1400px 700px at 90% -20%, var(--accent-bg), transparent 65%),
-        var(--surface);
-    }
-    a { color: inherit; text-decoration: none; }
-    .wrap { max-width: 1100px; margin: 0 auto; padding: 28px 20px 42px; }
-
-    /* ===== Header/Hero ===== */
-    header {
-      display: grid; gap: 16px;
-      padding: 22px;
-      background: var(--surface-2);
-      border: 1px solid var(--outline);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-    .title { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
-    .logo {
-      width: 44px; height: 44px; border-radius: 12px;
-      background: linear-gradient(135deg, var(--brand), var(--brand-600));
-      box-shadow: 0 6px 18px rgba(27,92,255,.35);
-    }
-    .title h1 { margin: 0; font-size: 1.6rem; font-weight: 700; letter-spacing: .2px; }
-    .subtitle { margin: 0; color: var(--text-soft); font-size: .98rem; }
-
-    /* ===== Toolbar & Search ===== */
-    .toolbar { display: grid; gap: 10px; }
-    .toolbar-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-    .search-wrap { position: relative; flex: 1 1 420px; }
-    .search {
-      display: flex; align-items: center; gap: 8px;
-      background: var(--surface); border: 1px solid var(--outline);
-      border-radius: 14px; padding: 8px 12px;
-    }
-    .search input {
-      width: 100%; border: 0; outline: none; background: transparent; color: var(--text);
-      font-size: .98rem;
-    }
-    .kbd {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      background: var(--surface-2); border: 1px solid var(--outline);
-      padding: 2px 8px; border-radius: 8px; color: var(--text-soft);
-    }
-    .chip {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 8px 12px; border: 1px solid var(--outline);
-      border-radius: var(--radius-chip); background: var(--surface); color: var(--text-soft);
-      cursor: pointer; user-select: none;
-      transition: border-color .12s ease, color .12s ease, background .12s ease;
-    }
-    .chip.active {
-      border-color: var(--brand);
-      color: var(--brand);
-      background: var(--brand-chip-bg);
-    }
-    .toggle {
-      margin-left: auto; display: inline-flex; align-items: center; gap: 10px;
-      padding: 8px 12px; border-radius: var(--radius-chip); border: 1px solid var(--outline);
-      background: var(--surface); cursor: pointer;
-    }
-
-    /* ===== Quick Reference Panel ===== */
-    .quick-panel {
-      display: none;
-      position: absolute; z-index: 10; inset-inline: 0; top: calc(100% + 8px);
-      background: var(--surface);
-      border: 1px solid var(--outline);
-      border-radius: 14px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-    .quick-header {
-      padding: 10px 12px; font-size: .88rem; color: var(--text-soft);
-      background: var(--surface-2);
-      border-bottom: 1px solid var(--outline);
-    }
-    .quick-list { display: grid; }
-    .quick-item {
-      display: grid; gap: 4px; padding: 10px 12px;
-      border-bottom: 1px solid var(--outline);
-      cursor: pointer; background: var(--surface);
-      transition: background .12s ease, outline .12s ease;
-    }
-    .quick-item:last-child { border-bottom: 0; }
-    .quick-item[aria-selected="true"] {
-      background: rgba(27,92,255, 0.10);
-      outline: 2px solid rgba(27,92,255, 0.40);
-    }
-    .qi-title { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: .98rem; }
-    .qi-desc  { color: var(--text-soft); font-size: .9rem; }
-    .badge {
-      display: inline-block; font-size: .75rem; color: var(--brand);
-      background: rgba(27,92,255, 0.18);
-      border: 1px solid var(--brand-chip-border);
-      padding: 2px 8px; border-radius: 999px;
-    }
-
-    /* ===== Sections & Cards ===== */
-    .section {
-      margin-top: 18px; padding: 18px 18px 8px;
-      background: var(--surface-2);
-      border: 1px solid var(--outline);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-    .section h2 { margin: 0 0 6px; font-size: 1.1rem; color: var(--text-soft); }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 12px;
-    }
-    .card {
-      display: grid; gap: 8px; padding: 12px 14px;
-      border: 1px solid var(--outline); background: var(--surface);
-      border-radius: var(--radius-card);
-      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
-    }
-    .card:hover {
-      transform: translateY(-2px);
-      border-color: var(--brand-card-border);
-      box-shadow: var(--shadow);
-    }
-    .card h3 { margin: 0; font-size: 1.02rem; display: flex; align-items: center; gap: 10px; }
-    .card p  { margin: 0; color: var(--text-soft); font-size: .92rem; }
-    .card .actions {
-      margin-top: 6px;
-      display: flex; gap: 8px; justify-content: flex-end; align-items: center; flex-wrap: wrap;
-    }
-
-    /* ===== Buttons (Option A) ===== */
-    .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      border: 1px solid var(--outline);
-      background: var(--surface);
-      color: var(--text);
-      font-weight: 600;
-      font-size: .92rem;
-      transition: background .12s ease, border-color .12s ease, color .12s ease, transform .08s ease;
-      cursor: pointer;
-      user-select: none;
-    }
-    .btn:hover {
-      transform: translateY(-1px);
-      border-color: var(--brand-card-border);
-    }
-    .btn-primary {
-      color: #fff;
-      background: linear-gradient(135deg, var(--brand), var(--brand-600));
-      border: 1px solid var(--brand-chip-border);
-      box-shadow: 0 6px 16px rgba(27,92,255,.25);
-    }
-    .btn-primary:hover {
-      box-shadow: 0 8px 20px rgba(27,92,255,.30);
-    }
-
-    /* ===== Footer ===== */
-    footer {
-      margin-top: 18px; padding: 14px; color: var(--text-soft);
-      display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between;
-    }
-
-    /* ===== Responsive niceties ===== */
-    @media (max-width: 520px) {
-      .title h1 { font-size: 1.35rem; }
-      .subtitle { font-size: .94rem; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EECOL Wire Reference Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#1b5cff',
+                            container: '#dbe1ff',
+                            'on-container': '#001453',
+                        },
+                        surface: {
+                            DEFAULT: '#fdfbff',
+                            container: '#f3f3f7',
+                            'on-surface': '#1b1b1f',
+                            'variant': '#e3e2e6',
+                        },
+                        dark: {
+                            surface: '#111318',
+                            'on-surface': '#e2e2e9',
+                            'surface-container': '#1e1f25',
+                        }
+                    },
+                    borderRadius: {
+                        'md3': '28px',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply bg-surface text-surface-on-surface transition-colors duration-300;
+            }
+            .dark body {
+                @apply bg-dark-surface text-dark-on-surface;
+            }
+        }
+        @layer components {
+            .md3-card {
+                @apply bg-surface-container rounded-md3 p-6 transition-all hover:shadow-lg hover:scale-[1.01] border border-transparent hover:border-primary/20 block no-underline text-inherit;
+            }
+            .dark .md3-card {
+                @apply bg-dark-surface-container;
+            }
+            .md3-chip {
+                @apply px-4 py-2 rounded-full border border-surface-variant font-medium transition-colors hover:bg-surface-variant;
+            }
+            .md3-chip.active {
+                @apply bg-primary-container text-primary-on-container border-transparent;
+            }
+            .md3-search {
+                @apply w-full bg-surface-variant/50 rounded-full px-6 py-4 pl-14 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-lg;
+            }
+            .dark .md3-search {
+                @apply bg-white/10;
+            }
+            .kbd {
+                @apply hidden sm:inline-block px-2 py-1 text-xs font-semibold text-surface-on-surface/50 bg-surface-variant rounded-md border border-surface-on-surface/20;
+            }
+        }
+    </style>
 </head>
-<body>
-  <div class="wrap">
-    <header aria-label="Reference hub header">
-      <div class="title">
-        <div class="logo" aria-hidden="true"></div>
-        <div>
-          <h1>EECOL Wire Reference Hub</h1>
-          <p class="subtitle">Fast, reliable lookups for wire types, sizes, diameters & tape fractions—made for the wire room.</p>
-        </div>
-      </div>
-
-      <div class="toolbar">
-        <!-- Row 1: Search + Theme -->
-        <div class="toolbar-row">
-          <div class="search-wrap" id="searchWrap">
-            <div class="search" role="search">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M21 21l-4.3-4.3m1.8-4.7a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-              </svg>
-              <input id="q" type="search" placeholder="Search references (type, size, standard…)" autocomplete="off" aria-autocomplete="list" aria-controls="quickList" />
-              <span class="kbd" aria-hidden="true">/</span>
+<body class="min-h-screen">
+    <div class="max-w-6xl mx-auto px-6 py-12">
+        <header class="flex flex-col gap-10 mb-16">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-5">
+                    <div class="w-14 h-14 bg-gradient-to-br from-primary to-blue-700 rounded-2xl shadow-xl flex items-center justify-center text-white">
+                        <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-4xl font-black tracking-tight">EECOL Wire Hub</h1>
+                        <p class="text-surface-on-surface/60 font-medium">Professional Wire Reference Resources</p>
+                    </div>
+                </div>
+                <button id="themeToggle" class="w-12 h-12 flex items-center justify-center rounded-full hover:bg-surface-variant transition-all active:scale-95 shadow-sm border border-surface-variant" aria-label="Toggle theme">
+                    <svg id="sunIcon" class="hidden w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                    <svg id="moonIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+                </button>
             </div>
 
-            <!-- Quick Reference Panel -->
-            <div class="quick-panel" id="quickPanel" role="listbox" aria-label="Quick Reference">
-              <div class="quick-header">Quick Reference (top 5)</div>
-              <div class="quick-list" id="quickList"></div>
+            <div class="relative group max-w-3xl">
+                <div class="absolute left-5 top-1/2 -translate-y-1/2 flex items-center gap-3">
+                    <svg class="w-6 h-6 text-surface-on-surface/40 group-focus-within:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                </div>
+                <input id="q" type="search" placeholder="Search references..." class="md3-search">
+                <div class="absolute right-5 top-1/2 -translate-y-1/2 flex items-center gap-2 pointer-events-none">
+                    <span class="kbd">/</span>
+                </div>
+
+                <div id="quickPanel" class="hidden absolute top-full left-0 right-0 mt-3 bg-white dark:bg-dark-surface-container rounded-[32px] shadow-2xl border border-surface-variant overflow-hidden z-50">
+                    <div class="px-8 py-3 text-[10px] font-black text-primary uppercase tracking-[0.2em] bg-primary/5 border-b border-surface-variant">Quick Access</div>
+                    <div id="quickList"></div>
+                </div>
             </div>
-          </div>
 
-          <button class="toggle" id="themeToggle" title="Toggle light/dark">
-            <span>Theme</span><span class="kbd">L/D</span>
-          </button>
-        </div>
-
-        <!-- Row 2: Category chips -->
-        <div class="toolbar-row" role="toolbar" aria-label="Filters">
-          <button class="chip active" data-tag="all" aria-pressed="true">All</button>
-          <button class="chip" data-tag="wire">Wire Types</button>
-          <button class="chip" data-tag="size">Sizes</button>
-          <button class="chip" data-tag="diameter">Diameter</button>
-          <button class="chip" data-tag="tools">Tape & Tools</button>
-        </div>
-      </div>
-    </header>
-
-    <section class="section" aria-label="References">
-      <h2>References</h2>
-      <div id="cards" class="grid" role="list"></div>
-    </section>
-
-    <footer>
-      <div>Made in the wire room · Offline-friendly · Fast to navigate</div>
-      <div>Tip: press <span class="kbd">/</span> to focus search</div>
-    </footer>
-  </div>
-
-  <!-- ===== Manifest (actual repo filenames wired here) ===== -->
-  <script type="application/json" id="pages-data">
-  [
-    {
-      "label": "ACWU90 Cable Sizes",
-      "href": "src/pages/ACWU90-Cable-Sizes.html",
-      "desc": "ACWU90 conductor sizing, ampacity, and application notes.",
-      "tags": ["wire","size"],
-      "badge": "ACWU90"
-    },
-    {
-      "label": "TECK90 Cable Sizes (600V)",
-      "href": "src/pages/TECK90-600v-Cable-Sizes.html",
-      "desc": "TECK90 600V conductor sizing and common configurations.",
-      "tags": ["wire","size"],
-      "badge": "TECK90"
-    },
-    {
-      "label": "TECK90 Cable Sizes (1kV)",
-      "href": "src/pages/TECK90-1KV-Cable-Sizes.html",
-      "desc": "TECK90 1kV conductor sizing and application notes.",
-      "tags": ["wire","size"],
-      "badge": "TECK90"
-    },
-    {
-      "label": "Bare Wire Sizes",
-      "href": "src/pages/BARE-Cable-Sizes.html",
-      "desc": "Bare copper and aluminum sizes with typical dimensions.",
-      "tags": ["wire","size"],
-      "badge": "Bare"
-    },
-    {
-      "label": "Cable Diameter Guide",
-      "href": "src/pages/Cable-Diameter-Guide-FINAL.html",
-      "desc": "Outside diameter references for common cables.",
-      "tags": ["diameter","size"],
-      "badge": "Diameter"
-    },
-    {
-      "label": "Tape Measure Fractional Reference",
-      "href": "src/pages/Tape-Measure-Fractional-Refrence.html",
-      "desc": "Fraction-to-decimal quick reference for accurate measuring.",
-      "tags": ["tools"],
-      "badge": "Tape"
-    }
-  ]
-  </script>
-
-  <!-- ===== Behavior ===== -->
-  <script>
-    (function(){
-      const $ = sel => document.querySelector(sel);
-      const listEl = $("#cards");
-      const searchEl = $("#q");
-      const chips = Array.from(document.querySelectorAll(".chip"));
-      const themeToggle = $("#themeToggle");
-
-      const quickPanel = $("#quickPanel");
-      const quickList  = $("#quickList");
-      const searchWrap = $("#searchWrap");
-
-      // Theme control (safe default to light)
-      const applyTheme = (mode) => {
-        document.documentElement.setAttribute("data-theme", mode);
-        localStorage.setItem("theme", mode);
-      };
-      const saved = localStorage.getItem("theme");
-      applyTheme(saved || "light");
-      themeToggle.addEventListener("click", () => {
-        const current = document.documentElement.getAttribute("data-theme") || "light";
-        applyTheme(current === "dark" ? "light" : "dark");
-      });
-      window.addEventListener("keydown", (e) => {
-        if ((e.key === "l" || e.key === "L") && e.altKey) applyTheme("light");
-        if ((e.key === "d" || e.key === "D") && e.altKey) applyTheme("dark");
-        if (e.key === "/" && !e.metaKey && !e.ctrlKey) { e.preventDefault(); searchEl.focus(); }
-      });
-
-      // Manifest
-      const raw = document.getElementById("pages-data").textContent.trim();
-      /** @type {{label:string, href:string, desc:string, tags:string[], badge?:string}[]} */
-      const pages = JSON.parse(raw);
-
-      // State
-      let query = "";
-      let tag = "all";
-      let quickIndex = -1; // keyboard selection index
-
-      const normalize = s => (s || "").toLowerCase();
-      // Simple relevance score
-      const score = (p, q) => {
-        if (!q) return 0;
-        const n = normalize(q);
-        const L = normalize(p.label);
-        const D = normalize(p.desc);
-        const B = normalize(p.badge || "");
-        const T = (p.tags || []).map(normalize).join(" ");
-        let s = 0;
-        if (L.includes(n)) s += 8;
-        if (B.includes(n)) s += 5;
-        if (T.includes(n)) s += 3;
-        if (D.includes(n)) s += 2;
-        if (L.startsWith(n)) s += 2; // prefix bonus
-        return s;
-      };
-      const matches = (p) => {
-        const q = normalize(query);
-        const inQ = !q || normalize(p.label).includes(q) || normalize(p.desc).includes(q) || (p.badge && normalize(p.badge).includes(q));
-        const inTag = (tag === "all") || (p.tags && p.tags.includes(tag));
-        return inQ && inTag;
-      };
-
-      const renderCards = () => {
-        const items = pages.filter(matches);
-        listEl.innerHTML = items.map(p => `
-          ${p.href}
-            <h3>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M6 5h12v14H6z" stroke="currentColor" stroke-width="1.5" />
-                <path d="M9 8h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                <path d="M9 12h6M9 16h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              </svg>
-              ${p.label}
-              ${p.badge ? `<span class="badge">${p.badge}</span>` : ""}
-            </h3>
-            <p>${p.desc}</p>
-            <div class="actions" aria-hidden="true">
-              <span class="btn btn-primary">
-                Open
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M7 12h10M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
+            <div class="flex flex-wrap gap-3" id="filterChips">
+                <button class="md3-chip active" data-tag="all">All</button>
+                <button class="md3-chip" data-tag="wire">Wire Types</button>
+                <button class="md3-chip" data-tag="size">Sizes</button>
+                <button class="md3-chip" data-tag="diameter">Diameter</button>
+                <button class="md3-chip" data-tag="tools">Tape & Tools</button>
             </div>
-          </a>
-        `).join("");
-      };
+        </header>
 
-      const showQuick = (items) => {
-        if (!items.length) {
-          quickPanel.style.display = "none";
-          quickIndex = -1;
-          quickList.innerHTML = "";
-          return;
-        }
-        quickList.innerHTML = items.map((p, i) => `
-          ${p.href}
-            <div class="qi-title">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M6 5h12v14H6z" stroke="currentColor" stroke-width="1.4" />
-                <path d="M9 8h6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-              </svg>
-              ${p.label} ${p.badge ? `<span class="badge">${p.badge}</span>` : ""}
+        <main>
+            <div id="cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Cards will be injected here -->
             </div>
-            <div class="qi-desc">${p.desc}</div>
-          </div>
-        `).join("");
-        quickPanel.style.display = "block";
-      };
+        </main>
 
-      const computeQuick = () => {
-        const q = query.trim();
-        if (q.length === 0) {
-          showQuick([]);
-          return;
-        }
-        const items = pages
-          .filter(matches)
-          .map(p => ({ p, s: score(p, q) }))
-          .sort((a,b) => b.s - a.s || a.p.label.localeCompare(b.p.label))
-          .slice(0, 5)
-          .map(x => x.p);
-        showQuick(items);
-      };
+        <footer class="mt-32 pt-10 border-t border-surface-variant flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-surface-on-surface/40 font-medium">
+            <p>© EECOL Wire Room · Offline Reference System</p>
+            <div class="flex gap-8">
+                <span>Press <kbd class="opacity-70">/</kbd> to search</span>
+                <span>Press <kbd class="opacity-70">L/D</kbd> for theme</span>
+            </div>
+        </footer>
+    </div>
 
-      // Events
-      searchEl.addEventListener("input", (e) => {
-        query = e.target.value || "";
-        computeQuick();
-        renderCards();
-      });
+    <script type="application/json" id="pages-data">
+        [
+            {
+              "label": "ACWU90 Cable Sizes",
+              "href": "src/pages/ACWU90-Cable-Sizes.html",
+              "desc": "ACWU90 conductor sizing, ampacity, and application notes.",
+              "tags": ["wire","size"],
+              "badge": "ACWU90"
+            },
+            {
+              "label": "TECK90 Cable Sizes (600V)",
+              "href": "src/pages/TECK90-600v-Cable-Sizes.html",
+              "desc": "TECK90 600V conductor sizing and common configurations.",
+              "tags": ["wire","size"],
+              "badge": "TECK90"
+            },
+            {
+              "label": "TECK90 Cable Sizes (1kV)",
+              "href": "src/pages/TECK90-1KV-Cable-Sizes.html",
+              "desc": "TECK90 1kV conductor sizing and application notes.",
+              "tags": ["wire","size"],
+              "badge": "TECK90"
+            },
+            {
+              "label": "Bare Wire Sizes",
+              "href": "src/pages/BARE-Cable-Sizes.html",
+              "desc": "Bare copper and aluminum sizes with typical dimensions.",
+              "tags": ["wire","size"],
+              "badge": "Bare"
+            },
+            {
+              "label": "Cable Diameter Guide",
+              "href": "src/pages/Cable-Diameter-Guide-FINAL.html",
+              "desc": "Outside diameter references for common cables.",
+              "tags": ["diameter","size"],
+              "badge": "Diameter"
+            },
+            {
+              "label": "Tape Measure Fractional Reference",
+              "href": "src/pages/Tape-Measure-Fractional-Refrence.html",
+              "desc": "Fraction-to-decimal quick reference for accurate measuring.",
+              "tags": ["tools"],
+              "badge": "Tape"
+            }
+        ]
+    </script>
 
-      // Keyboard within search for quick panel
-      searchEl.addEventListener("keydown", (e) => {
-        const items = Array.from(quickList.querySelectorAll(".quick-item"));
-        const has = items.length > 0;
-        if (!has) return;
+    <script>
+        (function() {
+            const $ = sel => document.querySelector(sel);
+            const cardsEl = $("#cards");
+            const searchEl = $("#q");
+            const quickPanel = $("#quickPanel");
+            const quickList = $("#quickList");
+            const themeToggle = $("#themeToggle");
+            const sunIcon = $("#sunIcon");
+            const moonIcon = $("#moonIcon");
 
-        if (e.key === "ArrowDown") {
-          e.preventDefault();
-          quickIndex = (quickIndex + 1) % items.length;
-          updateQuickSelection(items);
-        } else if (e.key === "ArrowUp") {
-          e.preventDefault();
-          quickIndex = (quickIndex - 1 + items.length) % items.length;
-          updateQuickSelection(items);
-        } else if (e.key === "Enter") {
-          if (quickIndex >= 0) {
-            e.preventDefault();
-            const href = items[quickIndex].getAttribute("data-href");
-            if (href) window.location.href = href;
-          }
-        } else if (e.key === "Escape") {
-          showQuick([]);
-        }
-      });
+            const applyTheme = (mode) => {
+                if (mode === 'dark') {
+                    document.documentElement.classList.add('dark');
+                    sunIcon.classList.remove('hidden');
+                    moonIcon.classList.add('hidden');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    sunIcon.classList.add('hidden');
+                    moonIcon.classList.remove('hidden');
+                }
+                localStorage.setItem("theme", mode);
+            };
 
-      function updateQuickSelection(items) {
-        items.forEach((el, idx) => el.setAttribute("aria-selected", String(idx === quickIndex)));
-        const sel = items[quickIndex];
-        if (sel) sel.scrollIntoView({ block: "nearest" });
-      }
+            const savedTheme = localStorage.getItem("theme") || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            applyTheme(savedTheme);
 
-      // Mouse interactions for quick panel
-      quickList.addEventListener("click", (e) => {
-        const item = e.target.closest(".quick-item");
-        if (!item) return;
-        const href = item.getAttribute("data-href");
-        if (href) window.location.href = href;
-      });
+            themeToggle.addEventListener("click", () => {
+                const isDark = document.documentElement.classList.contains('dark');
+                applyTheme(isDark ? 'light' : 'dark');
+            });
 
-      // Close quick panel when clicking outside
-      document.addEventListener("click", (e) => {
-        if (!searchWrap.contains(e.target)) {
-          showQuick([]);
-        }
-      });
+            window.addEventListener("keydown", (e) => {
+                if (e.key === "/" && document.activeElement !== searchEl) {
+                    e.preventDefault();
+                    searchEl.focus();
+                }
+                if ((e.key === "l" || e.key === "L") && e.altKey) applyTheme("light");
+                if ((e.key === "d" || e.key === "D") && e.altKey) applyTheme("dark");
+            });
 
-      // Category chips
-      chips.forEach(c => c.addEventListener("click", () => {
-        chips.forEach(x => x.classList.toggle("active", x === c));
-        tag = c.dataset.tag || "all";
-        computeQuick();
-        renderCards();
-      }));
+            const pages = JSON.parse($("#pages-data").textContent);
+            let currentTag = 'all';
+            let searchQuery = '';
 
-      // Initial paint
-      renderCards();
-    })();
-  </script>
+            const render = () => {
+                const filtered = pages.filter(p => {
+                    const matchesTag = currentTag === 'all' || p.tags.includes(currentTag);
+                    const q = searchQuery.toLowerCase();
+                    const matchesSearch = p.label.toLowerCase().includes(q) ||
+                                        p.desc.toLowerCase().includes(q) ||
+                                        p.badge.toLowerCase().includes(q);
+                    return matchesTag && matchesSearch;
+                });
+
+                cardsEl.innerHTML = filtered.map(p => `
+                    <a href="${p.href}" class="md3-card group">
+                        <div class="flex justify-between items-start mb-6">
+                            <span class="px-3 py-1 bg-primary/10 text-primary text-[10px] font-black rounded-lg uppercase tracking-widest border border-primary/20">${p.badge}</span>
+                            <div class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 group-hover:text-primary transition-colors">${p.label}</h3>
+                        <p class="text-sm text-surface-on-surface/60 leading-relaxed">${p.desc}</p>
+                    </a>
+                `).join('');
+            };
+
+            searchEl.addEventListener("input", (e) => {
+                searchQuery = e.target.value;
+                render();
+
+                if (searchQuery.length > 0) {
+                    const quickMatches = pages.filter(p => p.label.toLowerCase().includes(searchQuery.toLowerCase())).slice(0, 5);
+                    if (quickMatches.length > 0) {
+                        quickList.innerHTML = quickMatches.map(p => `
+                            <a href="${p.href}" class="block px-8 py-4 hover:bg-primary/5 border-b border-surface-variant last:border-0 transition-all group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <div class="font-bold text-base group-hover:text-primary transition-colors">${p.label}</div>
+                                        <div class="text-xs text-surface-on-surface/40 font-medium">${p.badge}</div>
+                                    </div>
+                                    <svg class="w-4 h-4 text-primary opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                                </div>
+                            </a>
+                        `).join('');
+                        quickPanel.classList.remove('hidden');
+                    } else {
+                        quickPanel.classList.add('hidden');
+                    }
+                } else {
+                    quickPanel.classList.add('hidden');
+                }
+            });
+
+            document.addEventListener("click", (e) => {
+                if (!searchEl.contains(e.target) && !quickPanel.contains(e.target)) {
+                    quickPanel.classList.add('hidden');
+                }
+            });
+
+            $("#filterChips").addEventListener("click", (e) => {
+                const chip = e.target.closest(".md3-chip");
+                if (!chip) return;
+
+                document.querySelectorAll(".md3-chip").forEach(c => c.classList.remove("active"));
+                chip.classList.add("active");
+                currentTag = chip.dataset.tag;
+                render();
+            });
+
+            render();
+        })();
+    </script>
 </body>
 </html>
