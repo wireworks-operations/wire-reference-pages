@@ -74,6 +74,13 @@
   .tm1 .legend .swatch.med { border-top-width: 3px; }
   .tm1 .legend .swatch.bold { border-top-width: 5px; }
 </style>
+
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') document.documentElement.classList.add('dark');
+        })();
+    </script>
 </head>
 <body>
   <div class="tm1" role="region" aria-label="Imperial and metric tape diagram (first inch)">
