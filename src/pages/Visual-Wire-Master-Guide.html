@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Wire Master Guide — Side-by-Side Comparison</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { DEFAULT: '#1b5cff', container: '#dbe1ff', 'on-container': '#001453' },
+                        surface: { DEFAULT: '#fdfbff', container: '#f3f3f7', 'on-surface': '#1b1b1f', 'variant': '#e3e2e6' },
+                        dark: { surface: '#111318', 'on-surface': '#e2e2e9', 'surface-container': '#1e1f25' }
+                    },
+                    borderRadius: { 'md3': '28px' }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer base {
+            body { @apply bg-surface text-surface-on-surface transition-colors duration-300 font-sans; }
+            .dark body { @apply bg-dark-surface text-dark-on-surface; }
+        }
+        @layer components {
+            .md3-card { @apply bg-surface-container rounded-md3 p-6 mb-8 border border-transparent transition-all shadow-sm; }
+            .dark .md3-card { @apply bg-dark-surface-container; }
+            .md3-title { @apply text-2xl font-black mb-6 flex items-center gap-3; }
+            .data-table { @apply w-full border-collapse; }
+            .data-table th { @apply text-left py-3 px-4 text-[10px] font-black uppercase tracking-widest text-surface-on-surface/50 border-b border-surface-variant; }
+            .data-table td { @apply py-3 px-4 border-b border-surface-variant/50 text-sm font-medium; }
+            .data-table tr:last-child td { @apply border-0; }
+            .badge { @apply px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-black rounded uppercase border border-primary/20; }
+        }
+    </style>
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem("theme") || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            if (savedTheme === 'dark') document.documentElement.classList.add('dark');
+        })();
+    </script>
+
+    <style type="text/tailwindcss">
+        .gauge-pill { @apply px-2 py-0.5 rounded-full text-white text-[10px] font-black shadow-sm inline-flex items-center justify-center min-w-[32px]; }
+        .g-14 { background-color: #1b5cff; }
+        .g-12 { background-color: #ff9800; }
+        .g-10 { background-color: #ffeb3b; color: #000; }
+        .g-8 { background-color: #f44336; }
+        .g-6 { background-color: #3f51b5; }
+        .g-4 { background-color: #4caf50; }
+        .g-2 { background-color: #9e9e9e; }
+        .g-large { background-color: #333333; }
+
+        .wire-circle { @apply rounded-full shadow-inner border border-black/10 transition-all; }
+        .dark .wire-circle { border-color: white/20; }
+
+        /* View Transition Animation */
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+            animation: none;
+            mix-blend-mode: normal;
+        }
+
+        ::view-transition-new(root) {
+            animation: reveal 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 999;
+        }
+
+        @keyframes reveal {
+            from { clip-path: polygon(100% 0, 100% 0, 100% 0); }
+            to { clip-path: polygon(100% 0, -110% 0, 100% 210%); }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="max-w-5xl mx-auto px-6 py-12">
+        <header class="flex flex-col gap-8 mb-12">
+            <div class="flex items-center justify-between">
+                <a href="../../index.html" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-surface-variant dark:bg-dark-surface-container hover:bg-primary hover:text-white transition-all font-bold text-sm group">
+                    <svg class="w-5 h-5 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/></svg>
+                    Back to Hub
+                </a>
+                <button id="themeToggle" class="p-2 rounded-full bg-surface-variant dark:bg-dark-surface-container hover:bg-primary/10 transition-colors border border-black/5 dark:border-white/10">
+                    <span id="sunIcon" class="hidden text-xl">☀️</span>
+                    <span id="moonIcon" class="text-xl">🌙</span>
+                </button>
+            </div>
+
+            <div class="bg-primary/5 rounded-[32px] p-10 border border-primary/10">
+                <h1 class="text-4xl font-black tracking-tight mb-4">Visual Wire Master Guide</h1>
+                <p class="text-surface-on-surface/60 dark:text-dark-on-surface/60 leading-relaxed font-medium max-w-2xl">
+                    Scale: 2px = 1mm. Visual representations of conductor diameters for quick size comparison and identification.
+                </p>
+            </div>
+        </header>
+
+        <main>
+            <section class="md3-card">
+                <div class="overflow-x-auto">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Gauge</th>
+                                <th>Color</th>
+                                <th>Diameter (mm)</th>
+                                <th>Visual Representation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="gauge-pill g-14">14 AWG</span></td>
+                                <td class="text-xs font-bold text-blue-500 uppercase tracking-tighter">Blue</td>
+                                <td>1.63</td>
+                                <td><div class="wire-circle g-14" style="width: 3.26px; height: 3.26px;"></div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="gauge-pill g-12">12 AWG</span></td>
+                                <td class="text-xs font-bold text-orange-500 uppercase tracking-tighter">Orange</td>
+                                <td>2.05</td>
+                                <td><div class="wire-circle g-12" style="width: 4.1px; height: 4.1px;"></div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="gauge-pill g-10">10 AWG</span></td>
+                                <td class="text-xs font-bold text-yellow-500 uppercase tracking-tighter">Yellow</td>
+                                <td>2.59</td>
+                                <td><div class="wire-circle g-10" style="width: 5.18px; height: 5.18px;"></div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="gauge-pill g-8">8 AWG</span></td>
+                                <td class="text-xs font-bold text-red-500 uppercase tracking-tighter">Red</td>
+                                <td>3.61</td>
+                                <td><div class="wire-circle g-8" style="width: 7.22px; height: 7.22px;"></div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="gauge-pill g-6">6 AWG</span></td>
+                                <td class="text-xs font-bold text-indigo-500 uppercase tracking-tighter">Indigo</td>
+                                <td>4.55</td>
+                                <td><div class="wire-circle g-6" style="width: 9.1px; height: 9.1px;"></div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="gauge-pill g-4">4 AWG</span></td>
+                                <td class="text-xs font-bold text-green-500 uppercase tracking-tighter">Green</td>
+                                <td>5.72</td>
+                                <td><div class="wire-circle g-4" style="width: 11.44px; height: 11.44px;"></div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="gauge-pill g-2">2 AWG</span></td>
+                                <td class="text-xs font-bold text-gray-500 uppercase tracking-tighter">Grey</td>
+                                <td>7.19</td>
+                                <td><div class="wire-circle g-2" style="width: 14.38px; height: 14.38px;"></div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="gauge-pill g-large">1/0 AWG</span></td>
+                                <td class="text-xs font-bold text-stone-500 uppercase tracking-tighter">Charcoal</td>
+                                <td>8.94</td>
+                                <td><div class="wire-circle g-large" style="width: 17.88px; height: 17.88px;"></div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="gauge-pill g-large">2/0 AWG</span></td>
+                                <td class="text-xs font-bold text-stone-500 uppercase tracking-tighter">Charcoal</td>
+                                <td>10.03</td>
+                                <td><div class="wire-circle g-large" style="width: 20.06px; height: 20.06px;"></div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="gauge-pill g-large">250 kcmil</span></td>
+                                <td class="text-xs font-bold text-stone-500 uppercase tracking-tighter">Charcoal</td>
+                                <td>13.77</td>
+                                <td><div class="wire-circle g-large" style="width: 27.54px; height: 27.54px;"></div></td>
+                            </tr>
+                            <tr>
+                                <td><span class="gauge-pill g-large">500 kcmil</span></td>
+                                <td class="text-xs font-bold text-stone-500 uppercase tracking-tighter">Charcoal</td>
+                                <td>19.46</td>
+                                <td><div class="wire-circle g-large" style="width: 38.92px; height: 38.92px;"></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        (function() {
+            const themeToggle = document.getElementById("themeToggle");
+            const sunIcon = document.getElementById("sunIcon");
+            const moonIcon = document.getElementById("moonIcon");
+
+            const performThemeChange = (mode) => {
+                if (mode === 'dark') {
+                    document.documentElement.classList.add('dark');
+                    sunIcon.classList.remove('hidden');
+                    moonIcon.classList.add('hidden');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    sunIcon.classList.add('hidden');
+                    moonIcon.classList.remove('hidden');
+                }
+                localStorage.setItem("theme", mode);
+            };
+
+            const applyTheme = (mode, animate = false) => {
+                if (animate && document.startViewTransition) {
+                    document.startViewTransition(() => performThemeChange(mode));
+                } else {
+                    performThemeChange(mode);
+                }
+            };
+
+            themeToggle.addEventListener("click", () => {
+                const isDark = document.documentElement.classList.contains('dark');
+                applyTheme(isDark ? 'light' : 'dark', true);
+            });
+
+            const initialTheme = localStorage.getItem("theme") || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            performThemeChange(initialTheme);
+        })();
+    </script>
+</body>
+</html>
