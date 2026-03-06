@@ -1,12 +1,16 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cable Diameter Guide — Master Reference</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>
+   Cable Diameter Guide — Master Reference
+  </title>
+<script src="https://cdn.tailwindcss.com">
+</script>
+<script>
+   tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
@@ -19,9 +23,9 @@
                 }
             }
         }
-    </script>
-    <style type="text/tailwindcss">
-        @layer base {
+  </script>
+<style type="text/tailwindcss">
+   @layer base {
             body { @apply bg-surface text-surface-on-surface transition-colors duration-300 font-sans; }
             .dark body { @apply bg-dark-surface text-dark-on-surface; }
         }
@@ -35,242 +39,847 @@
             .data-table tr:last-child td { @apply border-0; }
             .badge { @apply px-2 py-0.5 bg-primary/10 text-primary text-[10px] font-black rounded uppercase border border-primary/20; }
         }
-    </style>
-    <script>
-        (function() {
+  </style>
+<script>
+   (function() {
             const savedTheme = localStorage.getItem("theme") || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
             if (savedTheme === 'dark') document.documentElement.classList.add('dark');
         })();
-    </script>
+  </script>
+<style type="text/tailwindcss">
+   .gauge-pill { @apply px-2 py-0.5 rounded-full text-[10px] font-black shadow-sm inline-flex items-center justify-center border transition-colors; }
+        .g-14 { background-color: rgba(27, 92, 255, 0.1); color: #1b5cff; border-color: rgba(27, 92, 255, 0.3); }
+        .g-12 { background-color: rgba(255, 152, 0, 0.1); color: #ef6c00; border-color: rgba(255, 152, 0, 0.3); }
+        .g-10 { background-color: rgba(255, 235, 59, 0.2); color: #9a6d1f; border-color: rgba(255, 235, 59, 0.4); }
+        .g-8 { background-color: rgba(244, 67, 54, 0.1); color: #d32f2f; border-color: rgba(244, 67, 54, 0.3); }
+        .g-6 { background-color: rgba(63, 81, 181, 0.1); color: #3f51b5; border-color: rgba(63, 81, 181, 0.3); }
+        .g-4 { background-color: rgba(76, 175, 80, 0.1); color: #2e7d32; border-color: rgba(76, 175, 80, 0.3); }
+        .g-2 { background-color: rgba(158, 158, 158, 0.1); color: #616161; border-color: rgba(158, 158, 158, 0.3); }
+        .g-large { background-color: rgba(51, 51, 51, 0.1); color: #424242; border-color: rgba(51, 51, 51, 0.3); }
 
-    <style>
-        .gauge-pill { @apply px-2 py-0.5 rounded-full text-white text-[10px] font-black shadow-sm inline-flex items-center justify-center; }
-        .g-14 { background-color: #1b5cff; }
-        .g-12 { background-color: #ff9800; }
-        .g-10 { background-color: #ffeb3b; color: #000; }
-        .g-8 { background-color: #f44336; }
-        .g-6 { background-color: #3f51b5; }
-        .g-4 { background-color: #4caf50; }
-        .g-2 { background-color: #9e9e9e; }
-        .g-large { background-color: #333333; }
+        .dark .g-14 { background-color: rgba(27, 92, 255, 0.2); color: #60a5fa; border-color: rgba(27, 92, 255, 0.4); }
+        .dark .g-12 { background-color: rgba(255, 152, 0, 0.2); color: #fbbf24; border-color: rgba(255, 152, 0, 0.4); }
+        .dark .g-10 { background-color: rgba(255, 235, 59, 0.2); color: #fde047; border-color: rgba(255, 235, 59, 0.4); }
+        .dark .g-8 { background-color: rgba(244, 67, 54, 0.2); color: #f87171; border-color: rgba(244, 67, 54, 0.4); }
+        .dark .g-6 { background-color: rgba(99, 102, 241, 0.2); color: #818cf8; border-color: rgba(99, 102, 241, 0.4); }
+        .dark .g-4 { background-color: rgba(74, 222, 128, 0.2); color: #4ade80; border-color: rgba(74, 222, 128, 0.4); }
+        .dark .g-2 { background-color: rgba(156, 163, 175, 0.2); color: #d1d5db; border-color: rgba(156, 163, 175, 0.4); }
+        .dark .g-large { background-color: rgba(209, 213, 219, 0.1); color: #e5e7eb; border-color: rgba(209, 213, 219, 0.2); }
+
+        .wire-circle { @apply rounded-full shadow-inner border border-black/10 transition-all; }
+        .dark .wire-circle { border-color: white/20; }
+        .wire-circle.g-14 { background-color: #1b5cff; }
+        .wire-circle.g-12 { background-color: #ff9800; }
+        .wire-circle.g-10 { background-color: #ffeb3b; }
+        .wire-circle.g-8 { background-color: #f44336; }
+        .wire-circle.g-6 { background-color: #3f51b5; }
+        .wire-circle.g-4 { background-color: #4caf50; }
+        .wire-circle.g-2 { background-color: #9e9e9e; }
+        .wire-circle.g-large { background-color: #333333; }
+        .dark .wire-circle.g-large { background-color: #9ca3af; }
 
         .mat-badge { @apply px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider shadow-sm ml-1; }
         .mat-cu { background: linear-gradient(135deg, #b87333, #ec9706); color: white; }
         .mat-al { background: linear-gradient(135deg, #a5a9b4, #d1d5db); color: #374151; }
 
-        /* View Transition Animation */
-        ::view-transition-old(root),
-        ::view-transition-new(root) {
-            animation: none;
-            mix-blend-mode: normal;
-        }
-
-        ::view-transition-new(root) {
-            animation: reveal 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 999;
-        }
-
-        @keyframes reveal {
-            from { clip-path: polygon(100% 0, 100% 0, 100% 0); }
-            to { clip-path: polygon(100% 0, -110% 0, 100% 210%); }
-        }
-    </style>
-
+        ::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+        ::view-transition-new(root) { animation: reveal 0.6s cubic-bezier(0.4, 0, 0.2, 1); z-index: 999; }
+        @keyframes reveal { from { clip-path: polygon(100% 0, 100% 0, 100% 0); } to { clip-path: polygon(100% 0, -110% 0, 100% 210%); } }
+  </style>
 </head>
 <body class="min-h-screen">
-    <div class="max-w-6xl mx-auto px-6 py-12">
-        <header class="flex flex-col gap-8 mb-12">
-            <div class="flex items-center justify-between">
-                <a href="../../index.html" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-surface-variant hover:bg-primary hover:text-white transition-all font-bold text-sm group">
-                    <svg class="w-5 h-5 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/></svg>
-                    Back to Hub
-                </a>
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-primary to-blue-700 rounded-xl shadow-lg flex items-center justify-center text-white">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                    </div>
-                    <span class="font-black tracking-tight text-xl hidden sm:block">EECOL Wire Hub</span>
-                </div>
-                <button id="themeToggle" class="p-2 rounded-full bg-surface-variant hover:bg-primary/10 transition-colors ml-4 border border-black/5 dark:border-white/10">
-                    <span id="sunIcon" class="hidden text-xl">☀️</span>
-                    <span id="moonIcon" class="text-xl">🌙</span>
-                </button>
-
-            </div>
-
-            <div class="bg-primary/5 rounded-[32px] p-8 border border-primary/10">
-                <h1 class="text-4xl font-black tracking-tight mb-4">Cable Diameter Guide</h1>
-                <p class="text-surface-on-surface/60 leading-relaxed font-medium max-w-2xl">
-                    Master reference for TECK90, ACWU90, and Bare Copper. All data preserved from original specifications. 1&nbsp;in = 25.4&nbsp;mm.
-                </p>
-            </div>
-        </header>
-
-        <main class="space-y-12">
-            <!-- TECK90 600V Section -->
-            <section class="md3-card border-l-4 border-l-blue-600">
-                <h2 class="md3-title text-blue-600">TECK90 600 V</h2>
-                <div class="space-y-12">
-                    <!-- Metric -->
-                    <div>
-                        <h3 class="text-xs font-black uppercase tracking-widest text-primary mb-4">Metric (mm)</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                            <div>
-                                <h4 class="text-[10px] font-black uppercase text-surface-on-surface/30 mb-2">14 AWG</h4>
-                                <table class="data-table">
-                                    <tbody>
-                                        <tr><td><span class="gauge-pill g-14">14/2</span></td><td>17.5</td><td>1.84</td></tr>
-                                        <tr><td><span class="gauge-pill g-14">14/3</span></td><td>18.0</td><td>1.84</td></tr>
-                                        <tr><td><span class="gauge-pill g-14">14/4</span></td><td>19.3</td><td>1.84</td></tr>
-                                        <tr><td><span class="gauge-pill g-14">14/5</span></td><td>20.0</td><td>1.84</td></tr>
-                                        <tr><td><span class="gauge-pill g-14">14/6</span></td><td>21.0</td><td>1.84</td></tr>
-                                        <tr><td><span class="gauge-pill g-14">14/7</span></td><td>21.4</td><td>1.84</td></tr>
-                                        <tr><td><span class="gauge-pill g-14">14/8</span></td><td>23.1</td><td>1.84</td></tr>
-                                        <tr><td><span class="gauge-pill g-14">14/10</span></td><td>25.0</td><td>1.84</td></tr>
-                                        <tr><td><span class="gauge-pill g-14">14/12</span></td><td>25.7</td><td>1.84</td></tr>
-                                        <tr><td><span class="gauge-pill g-14">14/15</span></td><td>27.7</td><td>1.84</td></tr>
-                                        <tr><td><span class="gauge-pill g-14">14/20</span></td><td>30.2</td><td>1.84</td></tr>
-                                        <tr><td><span class="gauge-pill g-14">14/25</span></td><td>33.7</td><td>1.84</td></tr>
-                                        <tr><td><span class="gauge-pill g-14">14/30</span></td><td>35.5</td><td>1.84</td></tr>
-                                        <tr><td><span class="gauge-pill g-14">14/40</span></td><td>38.9</td><td>1.84</td></tr>
-                                        <tr><td><span class="gauge-pill g-14">14/50</span></td><td>41.7</td><td>1.84</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div>
-                                <h4 class="text-[10px] font-black uppercase text-surface-on-surface/30 mb-2">12 AWG</h4>
-                                <table class="data-table">
-                                    <tbody>
-                                        <tr><td><span class="gauge-pill g-12">12/2</span></td><td>18.4</td><td>2.32</td></tr>
-                                        <tr><td><span class="gauge-pill g-12">12/3</span></td><td>18.9</td><td>2.32</td></tr>
-                                        <tr><td><span class="gauge-pill g-12">12/4</span></td><td>20.8</td><td>2.32</td></tr>
-                                        <tr><td><span class="gauge-pill g-12">12/6</span></td><td>23.2</td><td>2.32</td></tr>
-                                        <tr><td><span class="gauge-pill g-12">12/8</span></td><td>24.7</td><td>2.32</td></tr>
-                                        <tr><td><span class="gauge-pill g-12">12/10</span></td><td>27.4</td><td>2.32</td></tr>
-                                        <tr><td><span class="gauge-pill g-12">12/12</span></td><td>28.6</td><td>2.32</td></tr>
-                                        <tr><td><span class="gauge-pill g-12">12/15</span></td><td>30.2</td><td>2.32</td></tr>
-                                        <tr><td><span class="gauge-pill g-12">12/20</span></td><td>33.6</td><td>2.32</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div>
-                                <h4 class="text-[10px] font-black uppercase text-surface-on-surface/30 mb-2">10 AWG</h4>
-                                <table class="data-table">
-                                    <tbody>
-                                        <tr><td><span class="gauge-pill g-10">10/2</span></td><td>19.5</td><td>2.95</td></tr>
-                                        <tr><td><span class="gauge-pill g-10">10/3</span></td><td>20.3</td><td>2.95</td></tr>
-                                        <tr><td><span class="gauge-pill g-10">10/4</span></td><td>22.0</td><td>2.95</td></tr>
-                                        <tr><td><span class="gauge-pill g-10">10/6</span></td><td>25.0</td><td>2.95</td></tr>
-                                        <tr><td><span class="gauge-pill g-10">10/10</span></td><td>30.2</td><td>2.95</td></tr>
-                                        <tr><td><span class="gauge-pill g-10">10/20</span></td><td>36.7</td><td>2.95</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Imperial (Selected samples as requested for Master view, but keep rows) -->
-                    <div>
-                        <h3 class="text-xs font-black uppercase tracking-widest text-primary mb-4">Imperial (in)</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                             <div>
-                                <h4 class="text-[10px] font-black uppercase text-surface-on-surface/30 mb-2">14 AWG</h4>
-                                <table class="data-table">
-                                    <tbody>
-                                        <tr><td><span class="gauge-pill g-14">14/2</span></td><td>0.69 (≈11/16)</td><td>0.072</td></tr>
-                                        <tr><td><span class="gauge-pill g-14">14/3</span></td><td>0.71 (≈23/32)</td><td>0.072</td></tr>
-                                        <tr><td><span class="gauge-pill g-14">14/4</span></td><td>0.76 (≈3/4)</td><td>0.072</td></tr>
-                                        <tr><td><span class="gauge-pill g-14">14/5</span></td><td>0.79 (≈13/16)</td><td>0.072</td></tr>
-                                        <tr><td><span class="gauge-pill g-14">14/6</span></td><td>0.83 (≈13/16)</td><td>0.072</td></tr>
-                                        <tr><td><span class="gauge-pill g-14">14/15</span></td><td>1.09 (≈1 1/16)</td><td>0.072</td></tr>
-                                        <tr><td><span class="gauge-pill g-14">14/50</span></td><td>1.64 (≈1 5/8)</td><td>0.072</td></tr>
-                                    </tbody>
-                                </table>
-                             </div>
-                             <div>
-                                <h4 class="text-[10px] font-black uppercase text-surface-on-surface/30 mb-2">12 & 10 AWG</h4>
-                                <table class="data-table">
-                                    <tbody>
-                                        <tr><td><span class="gauge-pill g-12">12/2</span></td><td>0.72 (≈23/32)</td><td>0.091</td></tr>
-                                        <tr><td><span class="gauge-pill g-12">12/3</span></td><td>0.75 (3/4)</td><td>0.091</td></tr>
-                                        <tr><td><span class="gauge-pill g-10">10/2</span></td><td>0.77 (≈3/4)</td><td>0.116</td></tr>
-                                        <tr><td><span class="gauge-pill g-10">10/20</span></td><td>1.45 (≈1 15/32)</td><td>0.116</td></tr>
-                                    </tbody>
-                                </table>
-                             </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- TECK90 1kV Section -->
-            <section class="md3-card border-l-4 border-l-amber-600">
-                <h2 class="md3-title text-amber-600">TECK90 1 kV</h2>
-                <div class="overflow-x-auto">
-                    <table class="data-table">
-                        <thead><tr><th>Item</th><th>Metric Cable</th><th>Metric Cond</th><th>Imperial Cable</th></tr></thead>
-                        <tbody>
-                            <tr class="bg-amber-500/5"><td colspan="4" class="text-[10px] font-black uppercase px-4 py-1">Single Conductor (1C)</td></tr>
-                            <tr><td><span class="gauge-pill g-large">1C350</span></td><td>36.7</td><td>17.30</td><td>1.45 (≈1 7/16)</td></tr>
-                            <tr><td><span class="gauge-pill g-large">1C500</span></td><td>40.3</td><td>20.65</td><td>1.59 (≈1 19/32)</td></tr>
-                            <tr><td><span class="gauge-pill g-large">1C750</span></td><td>46.0</td><td>25.35</td><td>1.81 (≈1 13/16)</td></tr>
-                            <tr class="bg-amber-500/5"><td colspan="4" class="text-[10px] font-black uppercase px-4 py-1">Two Conductor (2C)</td></tr>
-                            <tr><td><span class="gauge-pill g-12">12/2</span></td><td>20.2</td><td>2.32</td><td>0.79 (≈13/16)</td></tr>
-                            <tr><td><span class="gauge-pill g-10">10/2</span></td><td>21.1</td><td>2.95</td><td>0.83 (≈13/16)</td></tr>
-                            <tr><td><span class="gauge-pill g-8">8/2</span></td><td>23.5</td><td>—</td><td>0.93 (≈15/16)</td></tr>
-                            <tr><td><span class="gauge-pill g-6">6/2</span></td><td>26.8</td><td>—</td><td>1.06 (≈1 1/16)</td></tr>
-                            <tr class="bg-amber-500/5"><td colspan="4" class="text-[10px] font-black uppercase px-4 py-1">Three Conductor (3C)</td></tr>
-                            <tr><td><span class="gauge-pill g-12">12/3</span></td><td>20.9</td><td>2.32</td><td>0.82 (≈13/16)</td></tr>
-                            <tr><td><span class="gauge-pill g-10">10/3</span></td><td>22.6</td><td>2.95</td><td>0.89 (≈29/32)</td></tr>
-                            <tr><td><span class="gauge-pill g-large">2/0-3</span></td><td>43.9</td><td>—</td><td>1.73 (≈1 3/4)</td></tr>
-                            <tr><td><span class="gauge-pill g-large">500-3</span></td><td>70.0</td><td>—</td><td>2.76 (≈2 3/4)</td></tr>
-                            <tr class="bg-amber-500/5"><td colspan="4" class="text-[10px] font-black uppercase px-4 py-1">Four Conductor (4C)</td></tr>
-                            <tr><td><span class="gauge-pill g-8">8/4</span></td><td>26.1</td><td>—</td><td>1.03 (≈1)</td></tr>
-                            <tr><td><span class="gauge-pill g-large">4/0-4</span></td><td>54.4</td><td>—</td><td>2.14 (≈2 1/8)</td></tr>
-                            <tr><td><span class="gauge-pill g-large">500-4</span></td><td>76.7</td><td>—</td><td>3.02 (3)</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- Bare Copper -->
-            <section class="md3-card border-l-4 border-l-purple-600">
-                <h2 class="md3-title text-purple-600">Bare Copper</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <table class="data-table">
-                        <thead><tr><th>Size (Strands)</th><th>Metric Ø</th><th>Imperial Ø</th></tr></thead>
-                        <tbody>
-                            <tr><td><span class="gauge-pill g-14">14 (1)</span></td><td>1.63</td><td>0.064 (≈1/16)</td></tr>
-                            <tr><td><span class="gauge-pill g-12">12 (1)</span></td><td>2.05</td><td>0.081 (≈5/64)</td></tr>
-                            <tr><td><span class="gauge-pill g-10">10 (1)</span></td><td>2.59</td><td>0.102 (≈7/64)</td></tr>
-                            <tr><td><span class="gauge-pill g-8">8 (7)</span></td><td>3.61</td><td>0.142 (≈9/64)</td></tr>
-                            <tr><td><span class="gauge-pill g-6">6 (7)</span></td><td>4.55</td><td>0.179 (≈3/16)</td></tr>
-                            <tr><td><span class="gauge-pill g-4">4 (7)</span></td><td>5.72</td><td>0.225 (≈7/32)</td></tr>
-                            <tr><td><span class="gauge-pill g-2">2 (7)</span></td><td>7.19</td><td>0.283 (≈9/32)</td></tr>
-                        </tbody>
-                    </table>
-                    <table class="data-table">
-                        <thead><tr><th>Size (Strands)</th><th>Metric Ø</th><th>Imperial Ø</th></tr></thead>
-                        <tbody>
-                            <tr><td><span class="gauge-pill g-large">1/0 (19)</span></td><td>8.94</td><td>0.352 (≈11/32)</td></tr>
-                            <tr><td><span class="gauge-pill g-large">4/0 (19)</span></td><td>12.65</td><td>0.498 (≈1/2)</td></tr>
-                            <tr><td><span class="gauge-pill g-large">250 (37)</span></td><td>13.77</td><td>0.542 (≈9/16)</td></tr>
-                            <tr><td><span class="gauge-pill g-large">500 (37)</span></td><td>19.46</td><td>0.766 (≈49/64)</td></tr>
-                            <tr><td><span class="gauge-pill g-large">750 (61)</span></td><td>23.85</td><td>0.939 (≈15/16)</td></tr>
-                            <tr><td><span class="gauge-pill g-large">1000 (61)</span></td><td>28.37</td><td>1.117 (≈1 1/8)</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-        </main>
-
-        <footer class="mt-24 pt-10 border-t border-surface-variant text-center text-[10px] text-surface-on-surface/30 font-black uppercase tracking-[0.2em]">
-            EECOL Wire Room · Master Reference
-        </footer>
-    </div>
-
-
-    <script>
-        (function() {
+<div class="max-w-6xl mx-auto px-6 py-12">
+<header class="flex flex-col gap-8 mb-12">
+<div class="flex items-center justify-between">
+<a class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-surface-variant dark:bg-dark-surface-container hover:bg-primary hover:text-white transition-all font-bold text-sm group" href="../../index.html">
+<svg class="w-5 h-5 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M11 19l-7-7 7-7m8 14l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5">
+</path>
+</svg>
+      Back to Hub
+     </a>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-gradient-to-br from-primary to-blue-700 rounded-xl shadow-lg flex items-center justify-center text-white">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5">
+</path>
+</svg>
+</div>
+<span class="font-black tracking-tight text-xl hidden sm:block">
+       EECOL Wire Hub
+      </span>
+</div>
+<button class="p-2 rounded-full bg-surface-variant dark:bg-dark-surface-container hover:bg-primary/10 transition-colors ml-4 border border-black/5 dark:border-white/10" id="themeToggle">
+<span class="hidden text-xl" id="sunIcon">
+       ☀️
+      </span>
+<span class="text-xl" id="moonIcon">
+       🌙
+      </span>
+</button>
+</div>
+<div class="bg-primary/5 rounded-[32px] p-8 border border-primary/10">
+<h1 class="text-4xl font-black tracking-tight mb-4">
+      Cable Diameter Guide
+     </h1>
+<p class="text-surface-on-surface/60 dark:text-dark-on-surface/60 leading-relaxed font-medium max-w-2xl">
+      Master reference for TECK90, ACWU90, and Bare Copper. All data preserved from original specifications. 1 in = 25.4 mm.
+     </p>
+</div>
+</header>
+<main class="space-y-12">
+<!-- TECK90 600V Section -->
+<section class="md3-card border-l-4 border-l-blue-600">
+<h2 class="md3-title text-blue-600">
+      TECK90 600 V
+     </h2>
+<div class="space-y-12">
+<!-- Metric -->
+<div>
+<h3 class="text-xs font-black uppercase tracking-widest text-primary mb-4">
+        Metric (mm)
+       </h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div>
+<h4 class="text-[10px] font-black uppercase text-surface-on-surface/30 mb-2">
+          14 AWG
+         </h4>
+<table class="data-table">
+<tbody>
+<tr>
+<td><div class="wire-circle g-14" style="width: 3.68px; height: 3.68px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-14">14/2</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             17.5
+            </td>
+<td><div class="wire-circle g-large" style="width: 16.16px; height: 16.16px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-large">1.84</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+<tr>
+<td><div class="wire-circle g-14" style="width: 3.68px; height: 3.68px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-14">14/3</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             18.0
+            </td>
+<td><div class="wire-circle g-large" style="width: 16.16px; height: 16.16px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-large">1.84</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+<tr>
+<td><div class="wire-circle g-14" style="width: 3.68px; height: 3.68px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-14">14/4</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             19.3
+            </td>
+<td><div class="wire-circle g-large" style="width: 16.16px; height: 16.16px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-large">1.84</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+<tr>
+<td><div class="wire-circle g-14" style="width: 3.68px; height: 3.68px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-14">14/5</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             20.0
+            </td>
+<td><div class="wire-circle g-large" style="width: 16.16px; height: 16.16px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-large">1.84</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+<tr>
+<td><div class="wire-circle g-14" style="width: 3.68px; height: 3.68px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-14">14/6</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             21.0
+            </td>
+<td><div class="wire-circle g-large" style="width: 16.16px; height: 16.16px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-large">1.84</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+<tr>
+<td><div class="wire-circle g-14" style="width: 3.68px; height: 3.68px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-14">14/7</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             21.4
+            </td>
+<td><div class="wire-circle g-large" style="width: 16.16px; height: 16.16px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-large">1.84</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+<tr>
+<td><div class="wire-circle g-14" style="width: 3.68px; height: 3.68px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-14">14/8</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             23.1
+            </td>
+<td><div class="wire-circle g-large" style="width: 16.16px; height: 16.16px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-large">1.84</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+<tr>
+<td><div class="wire-circle g-14" style="width: 3.68px; height: 3.68px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-14">14/10</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             25.0
+            </td>
+<td><div class="wire-circle g-large" style="width: 16.16px; height: 16.16px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-large">1.84</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+<tr>
+<td><div class="wire-circle g-14" style="width: 3.68px; height: 3.68px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-14">14/12</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             25.7
+            </td>
+<td><div class="wire-circle g-large" style="width: 16.16px; height: 16.16px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-large">1.84</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+<tr>
+<td><div class="wire-circle g-14" style="width: 3.68px; height: 3.68px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-14">14/15</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             27.7
+            </td>
+<td><div class="wire-circle g-large" style="width: 16.16px; height: 16.16px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-large">1.84</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+<tr>
+<td><div class="wire-circle g-14" style="width: 3.68px; height: 3.68px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-14">14/20</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             30.2
+            </td>
+<td><div class="wire-circle g-large" style="width: 16.16px; height: 16.16px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-large">1.84</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+<tr>
+<td><div class="wire-circle g-14" style="width: 3.68px; height: 3.68px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-14">14/25</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             33.7
+            </td>
+<td><div class="wire-circle g-large" style="width: 16.16px; height: 16.16px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-large">1.84</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+<tr>
+<td><div class="wire-circle g-14" style="width: 3.68px; height: 3.68px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-14">14/30</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             35.5
+            </td>
+<td><div class="wire-circle g-large" style="width: 16.16px; height: 16.16px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-large">1.84</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+<tr>
+<td><div class="wire-circle g-14" style="width: 3.68px; height: 3.68px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-14">14/40</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             38.9
+            </td>
+<td><div class="wire-circle g-large" style="width: 16.16px; height: 16.16px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-large">1.84</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+<tr>
+<td><div class="wire-circle g-14" style="width: 3.68px; height: 3.68px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-14">14/50</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             41.7
+            </td>
+<td><div class="wire-circle g-large" style="width: 16.16px; height: 16.16px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-large">1.84</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<h4 class="text-[10px] font-black uppercase text-surface-on-surface/30 mb-2">
+          12 AWG
+         </h4>
+<table class="data-table">
+<tbody>
+<tr>
+<td><div class="wire-circle g-12" style="width: 4.64px; height: 4.64px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-12">12/2</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             18.4
+            </td>
+<td><div class="wire-circle g-2" style="width: 14.38px; height: 14.38px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-2">2.32</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+<tr>
+<td><div class="wire-circle g-12" style="width: 4.64px; height: 4.64px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-12">12/3</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             18.9
+            </td>
+<td><div class="wire-circle g-2" style="width: 14.38px; height: 14.38px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-2">2.32</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+<tr>
+<td><div class="wire-circle g-12" style="width: 4.64px; height: 4.64px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-12">12/4</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             20.8
+            </td>
+<td><div class="wire-circle g-2" style="width: 14.38px; height: 14.38px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-2">2.32</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+<tr>
+<td><div class="wire-circle g-12" style="width: 4.64px; height: 4.64px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-12">12/6</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             23.2
+            </td>
+<td><div class="wire-circle g-2" style="width: 14.38px; height: 14.38px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-2">2.32</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+<tr>
+<td><div class="wire-circle g-12" style="width: 4.64px; height: 4.64px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-12">12/8</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             24.7
+            </td>
+<td><div class="wire-circle g-2" style="width: 14.38px; height: 14.38px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-2">2.32</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+<tr>
+<td><div class="wire-circle g-12" style="width: 4.64px; height: 4.64px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-12">12/10</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             27.4
+            </td>
+<td><div class="wire-circle g-2" style="width: 14.38px; height: 14.38px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-2">2.32</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+<tr>
+<td><div class="wire-circle g-12" style="width: 4.64px; height: 4.64px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-12">12/12</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             28.6
+            </td>
+<td><div class="wire-circle g-2" style="width: 14.38px; height: 14.38px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-2">2.32</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+<tr>
+<td><div class="wire-circle g-12" style="width: 4.64px; height: 4.64px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-12">12/15</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             30.2
+            </td>
+<td><div class="wire-circle g-2" style="width: 14.38px; height: 14.38px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-2">2.32</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+<tr>
+<td><div class="wire-circle g-12" style="width: 4.64px; height: 4.64px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-12">12/20</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             33.6
+            </td>
+<td><div class="wire-circle g-2" style="width: 14.38px; height: 14.38px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-2">2.32</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<h4 class="text-[10px] font-black uppercase text-surface-on-surface/30 mb-2">
+          10 AWG
+         </h4>
+<table class="data-table">
+<tbody>
+<tr>
+<td><div class="wire-circle g-10" style="width: 5.90px; height: 5.90px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-10">10/2</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             19.5
+            </td>
+<td><div class="wire-circle g-2" style="width: 14.38px; height: 14.38px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-2">2.95</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+<tr>
+<td><div class="wire-circle g-10" style="width: 5.90px; height: 5.90px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-10">10/3</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             20.3
+            </td>
+<td><div class="wire-circle g-2" style="width: 14.38px; height: 14.38px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-2">2.95</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+<tr>
+<td><div class="wire-circle g-10" style="width: 5.90px; height: 5.90px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-10">10/4</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             22.0
+            </td>
+<td><div class="wire-circle g-2" style="width: 14.38px; height: 14.38px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-2">2.95</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+<tr>
+<td><div class="wire-circle g-10" style="width: 5.90px; height: 5.90px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-10">10/6</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             25.0
+            </td>
+<td><div class="wire-circle g-2" style="width: 14.38px; height: 14.38px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-2">2.95</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+<tr>
+<td><div class="wire-circle g-10" style="width: 5.90px; height: 5.90px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-10">10/10</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             30.2
+            </td>
+<td><div class="wire-circle g-2" style="width: 14.38px; height: 14.38px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-2">2.95</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+<tr>
+<td><div class="wire-circle g-10" style="width: 5.90px; height: 5.90px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-10">10/20</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             36.7
+            </td>
+<td><div class="wire-circle g-2" style="width: 14.38px; height: 14.38px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-2">2.95</span> <span class="mat-badge mat-cu">CU</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Imperial (Selected samples as requested for Master view, but keep rows) -->
+<div>
+<h3 class="text-xs font-black uppercase tracking-widest text-primary mb-4">
+        Imperial (in)
+       </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+<h4 class="text-[10px] font-black uppercase text-surface-on-surface/30 mb-2">
+          14 AWG
+         </h4>
+<table class="data-table">
+<tbody>
+<tr>
+<td><div class="wire-circle g-14" style="width: 3.66px; height: 3.66px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-14">14/2</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             0.69 (≈11/16)
+            </td>
+<td>
+             0.072
+            </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-14" style="width: 3.66px; height: 3.66px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-14">14/3</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             0.71 (≈23/32)
+            </td>
+<td>
+             0.072
+            </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-14" style="width: 3.66px; height: 3.66px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-14">14/4</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             0.76 (≈3/4)
+            </td>
+<td>
+             0.072
+            </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-14" style="width: 3.66px; height: 3.66px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-14">14/5</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             0.79 (≈13/16)
+            </td>
+<td>
+             0.072
+            </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-14" style="width: 3.66px; height: 3.66px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-14">14/6</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             0.83 (≈13/16)
+            </td>
+<td>
+             0.072
+            </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-14" style="width: 3.66px; height: 3.66px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-14">14/15</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             1.09 (≈1 1/16)
+            </td>
+<td>
+             0.072
+            </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-14" style="width: 3.66px; height: 3.66px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-14">14/50</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             1.64 (≈1 5/8)
+            </td>
+<td>
+             0.072
+            </td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<h4 class="text-[10px] font-black uppercase text-surface-on-surface/30 mb-2">
+          12 &amp; 10 AWG
+         </h4>
+<table class="data-table">
+<tbody>
+<tr>
+<td><div class="wire-circle g-12" style="width: 4.62px; height: 4.62px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-12">12/2</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             0.72 (≈23/32)
+            </td>
+<td>
+             0.091
+            </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-12" style="width: 4.62px; height: 4.62px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-12">12/3</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             0.75 (3/4)
+            </td>
+<td>
+             0.091
+            </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-10" style="width: 5.89px; height: 5.89px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-10">10/2</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             0.77 (≈3/4)
+            </td>
+<td>
+             0.116
+            </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-10" style="width: 5.89px; height: 5.89px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-10">10/20</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+             1.45 (≈1 15/32)
+            </td>
+<td>
+             0.116
+            </td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- TECK90 1kV Section -->
+<section class="md3-card border-l-4 border-l-amber-600">
+<h2 class="md3-title text-amber-600">
+      TECK90 1 kV
+     </h2>
+<div class="overflow-x-auto">
+<table class="data-table">
+<thead>
+<tr>
+<th>
+          Item
+         </th>
+<th>
+          Metric Cable
+         </th>
+<th>
+          Metric Cond
+         </th>
+<th>
+          Imperial Cable
+         </th>
+</tr>
+</thead>
+<tbody>
+<tr class="bg-amber-500/5">
+<td class="text-[10px] font-black uppercase px-4 py-1" colspan="4">Single Conductor (1C)</td>
+</tr>
+<tr>
+<td><div class="wire-circle g-large" style="width: 878.84px; height: 878.84px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-large">1C350</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+          36.7
+         </td>
+<td>
+          17.30
+         </td>
+<td>
+          1.45 (≈1 7/16)
+         </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-large" style="width: 1049.02px; height: 1049.02px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-large">1C500</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+          40.3
+         </td>
+<td>
+          20.65
+         </td>
+<td>
+          1.59 (≈1 19/32)
+         </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-large" style="width: 1287.78px; height: 1287.78px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-large">1C750</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+          46.0
+         </td>
+<td>
+          25.35
+         </td>
+<td>
+          1.81 (≈1 13/16)
+         </td>
+</tr>
+<tr class="bg-amber-500/5">
+<td class="text-[10px] font-black uppercase px-4 py-1" colspan="4">Two Conductor (2C)</td>
+</tr>
+<tr>
+<td><div class="wire-circle g-12" style="width: 117.86px; height: 117.86px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-12">12/2</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+          20.2
+         </td>
+<td>
+          2.32
+         </td>
+<td>
+          0.79 (≈13/16)
+         </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-10" style="width: 149.86px; height: 149.86px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-10">10/2</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+          21.1
+         </td>
+<td>
+          2.95
+         </td>
+<td>
+          0.83 (≈13/16)
+         </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-8" style="width: 1193.80px; height: 1193.80px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-8">8/2</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+          23.5
+         </td>
+<td>
+          —
+         </td>
+<td>
+          0.93 (≈15/16)
+         </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-6" style="width: 1361.44px; height: 1361.44px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-6">6/2</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+          26.8
+         </td>
+<td>
+          —
+         </td>
+<td>
+          1.06 (≈1 1/16)
+         </td>
+</tr>
+<tr class="bg-amber-500/5">
+<td class="text-[10px] font-black uppercase px-4 py-1" colspan="4">Three Conductor (3C)</td>
+</tr>
+<tr>
+<td><div class="wire-circle g-12" style="width: 117.86px; height: 117.86px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-12">12/3</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+          20.9
+         </td>
+<td>
+          2.32
+         </td>
+<td>
+          0.82 (≈13/16)
+         </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-10" style="width: 149.86px; height: 149.86px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-10">10/3</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+          22.6
+         </td>
+<td>
+          2.95
+         </td>
+<td>
+          0.89 (≈29/32)
+         </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-large" style="width: 2230.12px; height: 2230.12px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-large">2/0-3</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+          43.9
+         </td>
+<td>
+          —
+         </td>
+<td>
+          1.73 (≈1 3/4)
+         </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-large" style="width: 3556.00px; height: 3556.00px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-large">500-3</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+          70.0
+         </td>
+<td>
+          —
+         </td>
+<td>
+          2.76 (≈2 3/4)
+         </td>
+</tr>
+<tr class="bg-amber-500/5">
+<td class="text-[10px] font-black uppercase px-4 py-1" colspan="4">Four Conductor (4C)</td>
+</tr>
+<tr>
+<td><div class="wire-circle g-8" style="width: 1325.88px; height: 1325.88px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-8">8/4</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+          26.1
+         </td>
+<td>
+          —
+         </td>
+<td>
+          1.03 (≈1)
+         </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-large" style="width: 2763.52px; height: 2763.52px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-large">4/0-4</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+          54.4
+         </td>
+<td>
+          —
+         </td>
+<td>
+          2.14 (≈2 1/8)
+         </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-large" style="width: 3896.36px; height: 3896.36px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-large">500-4</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+          76.7
+         </td>
+<td>
+          —
+         </td>
+<td>
+          3.02 (3)
+         </td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Bare Copper -->
+<section class="md3-card border-l-4 border-l-purple-600">
+<h2 class="md3-title text-purple-600">
+      Bare Copper
+     </h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<table class="data-table">
+<thead>
+<tr>
+<th>
+          Size (Strands)
+         </th>
+<th>
+          Metric Ø
+         </th>
+<th>
+          Imperial Ø
+         </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><div class="wire-circle g-14" style="width: 82.80px; height: 82.80px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-14">14 (1)</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+          1.63
+         </td>
+<td>
+          0.064 (≈1/16)
+         </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-12" style="width: 104.14px; height: 104.14px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-12">12 (1)</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+          2.05
+         </td>
+<td>
+          0.081 (≈5/64)
+         </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-10" style="width: 131.57px; height: 131.57px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-10">10 (1)</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+          2.59
+         </td>
+<td>
+          0.102 (≈7/64)
+         </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-8" style="width: 183.39px; height: 183.39px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-8">8 (7)</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+          3.61
+         </td>
+<td>
+          0.142 (≈9/64)
+         </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-6" style="width: 231.14px; height: 231.14px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-6">6 (7)</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+          4.55
+         </td>
+<td>
+          0.179 (≈3/16)
+         </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-4" style="width: 290.58px; height: 290.58px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-4">4 (7)</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+          5.72
+         </td>
+<td>
+          0.225 (≈7/32)
+         </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-2" style="width: 365.25px; height: 365.25px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-2">2 (7)</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+          7.19
+         </td>
+<td>
+          0.283 (≈9/32)
+         </td>
+</tr>
+</tbody>
+</table>
+<table class="data-table">
+<thead>
+<tr>
+<th>
+          Size (Strands)
+         </th>
+<th>
+          Metric Ø
+         </th>
+<th>
+          Imperial Ø
+         </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><div class="wire-circle g-large" style="width: 454.15px; height: 454.15px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-large">1/0 (19)</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+          8.94
+         </td>
+<td>
+          0.352 (≈11/32)
+         </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-4" style="width: 642.62px; height: 642.62px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-4">4/0 (19)</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+          12.65
+         </td>
+<td>
+          0.498 (≈1/2)
+         </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-large" style="width: 699.52px; height: 699.52px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-large">250 (37)</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+          13.77
+         </td>
+<td>
+          0.542 (≈9/16)
+         </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-large" style="width: 988.57px; height: 988.57px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-large">500 (37)</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+          19.46
+         </td>
+<td>
+          0.766 (≈49/64)
+         </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-large" style="width: 1211.58px; height: 1211.58px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-large">750 (61)</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+          23.85
+         </td>
+<td>
+          0.939 (≈15/16)
+         </td>
+</tr>
+<tr>
+<td><div class="wire-circle g-large" style="width: 1441.20px; height: 1441.20px; display: inline-block; vertical-align: middle; margin-right: 8px;"></div><span class="gauge-pill g-large">1000 (61)</span> <span class="mat-badge mat-cu">CU</span></td>
+<td>
+          28.37
+         </td>
+<td>
+          1.117 (≈1 1/8)
+         </td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</main>
+<footer class="mt-24 pt-10 border-t border-surface-variant text-center text-[10px] text-surface-on-surface/30 font-black uppercase tracking-[0.2em]">
+    EECOL Wire Room · Master Reference
+   </footer>
+</div>
+<script>
+   (function() {
             const themeToggle = document.getElementById("themeToggle");
             const sunIcon = document.getElementById("sunIcon");
             const moonIcon = document.getElementById("moonIcon");
@@ -306,7 +915,6 @@
             const initialTheme = localStorage.getItem("theme") || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
             performThemeChange(initialTheme);
         })();
-    </script>
-
+  </script>
 </body>
 </html>
